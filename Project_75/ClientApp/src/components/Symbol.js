@@ -1,31 +1,29 @@
 import React, { Component } from 'react';
 
-export class FetchData extends Component {
-  static displayName = FetchData.name;
+export class Symbol extends Component {
+  static displayName = Symbol.name;
 
   constructor(props) {
     super(props);
-    this.state = { bets: [], loading: true };
+    this.state = { symbols: [], loading: true };
   }
 
   componentDidMount() {
-    this.populateBetData();
+    this.populateSymbolData();
   }
 
-  static renderBetsTable(bets) {
+  static renderSymbolsTable(symbols) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Number</th>
             <th>Symbol</th>
           </tr>
         </thead>
         <tbody>
-          {bets.map(bet =>
-            <tr key={bet.number+bet.symbol+bet.openTime}>
-              <td>{bet.number+bet.symbol}</td>
-              <td>{bet.symbol}</td>
+          {symbols.map(symbol =>
+            <tr key={symbol.name}>
+              <td>{symbol.name}</td>
             </tr>
           )}
         </tbody>
@@ -36,20 +34,20 @@ export class FetchData extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderBetsTable(this.state.bets);
+      : Symbol.renderSymbolsTable(this.state.symbols);
 
     return (
       <div>
-        <h1 id="tabelLabel" >Bets</h1>
+        <h1 id="tabelLabel" >Symbols</h1>
         <p>This component demonstrates fetching data from the server.</p>
         {contents}
       </div>
     );
   }
 
-  async populateBetData() {
-    const response = await fetch('bet');
+  async populateSymbolData() {
+    const response = await fetch('symbol');
     const data = await response.json();
-    this.setState({ bets: data, loading: false });
+    this.setState({ symbols: data, loading: false });
   }
 }
