@@ -1,6 +1,6 @@
 ﻿namespace Project_76.Models
 {
-    public class Purchase
+    public class Product
     {
         public int Id { get; set; }
         public string Title { get; set; }

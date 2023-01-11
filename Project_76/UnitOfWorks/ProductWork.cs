@@ -3,20 +3,20 @@ using Project_76.Repositories;
 
 namespace Project_76.UnitOfWorks
 {
-    public class PurchaseWork
+    public class ProductWork
     {
         private HostContext _context = new HostContext();
 
-        private PurchaseRepo? _purchaseRepo;
+        private ProductRepo? _productRepo;
 
-        public PurchaseRepo PurchaseRepo
+        public ProductRepo ProductRepo
         {
             get
             {
-                if (_purchaseRepo == null) _purchaseRepo = new PurchaseRepo(_context);
-                return _purchaseRepo;
+                if (_productRepo == null) _productRepo = new ProductRepo(_context);
+                return _productRepo;
             }
-            set { _purchaseRepo = value; }
+            set { _productRepo = value; }
         }
         public void Dispose() => GC.SuppressFinalize(this);
     }

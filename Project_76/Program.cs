@@ -1,11 +1,8 @@
-using Project_76.HostContexts;
-using ConfigurationManager = Project_76.ConfigurationManager;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<HostContext>();
 
 var app = builder.Build();
 
@@ -27,7 +24,6 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html"); ;
 
-app.MapControllers();
 app.UseCors(x => x
         .AllowAnyOrigin()
         .AllowAnyMethod()

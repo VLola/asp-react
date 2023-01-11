@@ -1,20 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_76.Models;
-using System.Collections.Generic;
 
 namespace Project_76.HostContexts
 {
     public class HostContext : DbContext
     {
-        protected readonly IConfiguration Configuration;
-        public HostContext(IConfiguration configuration)
+        public DbSet<Product> Products { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Configuration = configuration;
+            optionsBuilder.UseSqlServer(new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build()
+                .GetConnectionString("DefaultConnection"));
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-        }
-        public DbSet<Purchase> Purchases { get; set; }
     }
 }
