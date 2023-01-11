@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import './Home.css';
+import './Change.css';
+import { Product } from "./Product";
 
-export class Home extends Component {
-  static displayName = Home.name;
+export class Change extends Component {
+  static displayName = Change.name;
 
   constructor(props) {
     super(props);
@@ -10,18 +11,14 @@ export class Home extends Component {
   }
 
   componentDidMount() {
-    this.populateProductData();
+    this.populateChangeData();
   }
 
-  static renderProductsTable(products) {
+  static renderChangesTable(products) {
     return (
       <div className='div__main'>
         {products.map(product =>
-            <div key={product.id} className='div__product'>
-              <img className='img__product' src={product.image}></img>
-              <div className='div__product-title'>{product.title}</div>
-              <div className='div__product-text'>{product.description}</div>
-            </div>
+          <Product key={product.id} product={product}/>
           )}
       </div>
     );
@@ -30,11 +27,11 @@ export class Home extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : Home.renderProductsTable(this.state.products);
+      : Change.renderChangesTable(this.state.products);
 
     return (
       <div>
-      <h1>Products</h1>
+      <h1>Changes</h1>
       <div>
         {contents}
       </div>
@@ -42,7 +39,7 @@ export class Home extends Component {
     );
   }
 
-  async populateProductData() {
+  async populateChangeData() {
     const response = await fetch('product');
     const data = await response.json();
     this.setState({ products: data, loading: false });

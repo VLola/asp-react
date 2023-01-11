@@ -1,51 +1,53 @@
 import React, { Component } from 'react';
-import './Product.css';
+import './Change.css';
 
 export class Product extends Component {
   static displayName = Product.name;
 
   constructor(props) {
     super(props);
-    this.state = { products: [], loading: true };
+    this.state = { id: props.product.id, title: props.product.title, description: props.product.description, image: props.product.image};
+    this.changeImage = this.changeImage.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
+    this.changeDescription = this.changeDescription.bind(this);
+    this.save = this.save.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
-  componentDidMount() {
-    this.populateProductData();
+  changeTitle(event) {
+    this.setState({title: event.target.value});
   }
 
-  static renderProductsTable(products) {
-    return (
-      <div className='div__main'>
-        {products.map(product =>
-            <div key={product.id} className='div__product'>
-              <img className='img__product' src={product.image}></img>
-              <div className='div__product-title'>{product.title}</div>
-              <div className='div__product-text'>{product.description}</div>
-            </div>
-          )}
-      </div>
-    );
+  changeImage(event) {
+    this.setState({image: event.target.value});
+  }
+
+  changeDescription(event) {
+    this.setState({description: event.target.value});
+  }
+
+  save(){
+    alert(this.state.id);
+  }
+
+  delete(){
+    alert(this.state.id);
   }
 
   render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : Product.renderProductsTable(this.state.products);
-
-    return (
-      <div>
-      <h1>Products</h1>
-      <p>This component demonstrates fetching data from the server.</p>
-      <div>
-        {contents}
-      </div>
-      </div>
+    return(
+            <div className='div__product'>
+              <label htmlFor="image">Image:</label>
+              <textarea className='textarea__product' name='image' value={this.state.image} onChange={this.changeImage}></textarea>
+              <label htmlFor="title">Title:</label>
+              <textarea className='textarea__product' name='title' value={this.state.title} onChange={this.changeTitle}></textarea>
+              <label htmlFor="description">Description:</label>
+              <textarea className='textarea__product' name='description' value={this.state.description} onChange={this.changeDescription}></textarea>
+              <div>
+                <button onClick={this.save} className='button__product'>Save</button>
+                <button className='button__product'>Delete</button>
+              </div>
+            </div>
     );
-  }
-
-  async populateProductData() {
-    const response = await fetch('product');
-    const data = await response.json();
-    this.setState({ products: data, loading: false });
   }
 }
