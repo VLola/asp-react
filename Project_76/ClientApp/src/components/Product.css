@@ -24,3 +24,26 @@
 .button__product{
   margin: 10px 20px;
 }
+
+.img__product{
+  height: 40%;
+  width: 70%;
+  margin: 2%;
+}
+
+.div__product-title{
+  width: 90%;
+  height: 20%;
+  margin: 2%;
+  font-size: x-large;
+  font-weight: bold;
+  overflow-wrap:break-word;
+  overflow: hidden;
+}
+
+.div__product-text{
+  width: 90%;
+  height: 20%;
+  overflow-wrap:break-word;
+  overflow: hidden;
+}

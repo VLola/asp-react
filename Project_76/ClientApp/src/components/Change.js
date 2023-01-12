@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Change.css';
+import './Home.css';
 import { Product } from "./Product";
 
 export class Change extends Component {
@@ -18,7 +18,7 @@ export class Change extends Component {
     return (
       <div className='div__main'>
         {products.map(product =>
-          <Product key={product.id} product={product}/>
+          <Product key={product.id} product={product} change={true}/>
           )}
       </div>
     );
