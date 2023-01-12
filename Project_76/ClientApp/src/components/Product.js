@@ -27,17 +27,27 @@ export class Product extends Component {
   }
 
   save(){
-    alert(this.state.id);
+    const data = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id: this.state.id,
+      title: this.state.title,
+      description: this.state.description,
+      image: this.state.image
+      })
+    };
+    fetch('product/Update', data);
   }
 
   delete(){
-    alert(this.state.id);
+    fetch('product?id=' + this.state.id, { method: 'DELETE' });
   }
 
   render() {
     if(this.state.change){
       return(
-        <div className='div__product'>
+        <div className='div__change-product'>
           <label htmlFor="image">Image:</label>
           <textarea className='textarea__product' name='image' value={this.state.image} onChange={this.changeImage}></textarea>
           <label htmlFor="title">Title:</label>

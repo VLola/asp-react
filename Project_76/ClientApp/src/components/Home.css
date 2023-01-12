@@ -1,6 +1,39 @@
 .div__main {
   display: flex;
+}
+
+.div__products {
+  display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
+}
+
+.div__change-products {
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.div__add-product {
+  width: 30%;
+  height: fit-content;
+  top: 10px;
+  position: sticky;
+  padding: 10px;
+}
+
+.div__add{
+  display: flex;
+  flex-direction: column;
+}
+
+.button__add{
+  margin-block: 10px;
+  font-size: x-large;
+}
+
+.label__add{
+  font-size: x-large;
 }

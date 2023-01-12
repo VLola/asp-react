@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Home.css';
 import { Product } from "./Product";
+import { Add } from "./Add";
 
 export class Change extends Component {
   static displayName = Change.name;
@@ -17,9 +18,15 @@ export class Change extends Component {
   static renderChangesTable(products) {
     return (
       <div className='div__main'>
-        {products.map(product =>
-          <Product key={product.id} product={product} change={true}/>
+        <div className='div__add-product'>
+            <h3>Add Product:</h3>
+              <Add/>
+          </div>
+        <div className='div__change-products'>
+          {products.map(product =>
+            <Product key={product.id} product={product} change={true}/>
           )}
+        </div>
       </div>
     );
   }
@@ -31,10 +38,7 @@ export class Change extends Component {
 
     return (
       <div>
-      <h1>Changes</h1>
-      <div>
         {contents}
-      </div>
       </div>
     );
   }

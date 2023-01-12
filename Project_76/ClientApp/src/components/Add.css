@@ -1,0 +1,11 @@
+.div__add{
+  display: flex;
+  flex-direction: column;
+}
+.button__add{
+  margin-block: 10px;
+  font-size: x-large;
+}
+.label__add{
+  font-size: x-large;
+}

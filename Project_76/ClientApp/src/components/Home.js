@@ -16,7 +16,7 @@ export class Home extends Component {
 
   static renderProductsTable(products) {
     return (
-      <div className='div__main'>
+      <div className='div__products'>
         {products.map(product =>
           <Product key={product.id} product={product} change={false}/>
           )}

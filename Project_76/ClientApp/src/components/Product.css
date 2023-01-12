@@ -4,11 +4,24 @@
   flex-direction: row;
   justify-content: center;
 }
+
 .div__product {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 20%;
+  aspect-ratio: 4/6;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.div__change-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
   aspect-ratio: 4/6;
   border: 1px solid black;
   border-radius: 5px;
