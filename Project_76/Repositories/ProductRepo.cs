@@ -12,10 +12,12 @@ namespace Project_76.Repositories
         }
         public Product Get(int id) => context.Products.Find(id);
         public IEnumerable<Product> GetAll() => context.Products;
-        public void Add(Product product) {
+        public void Add(Product product)
+        {
             context.Products.Add(product);
             context.SaveChanges();
         }
+        public IEnumerable<Product> Find(string text) => context.Products.Where(product=>product.Title.Contains(text));
         public bool Remove(int id)
         {
             Product? product = context.Products.Find(id);

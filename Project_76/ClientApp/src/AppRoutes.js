@@ -4,7 +4,7 @@ import { Change } from "./components/Change";
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <Home/>
   },
   {
     path: '/change-data-product',

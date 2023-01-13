@@ -14,9 +14,15 @@ namespace Project_76.Controllers
             work = new ProductWork();
         }
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IEnumerable<Product> GetAll()
         {
             return work.ProductRepo.GetAll();
+        }
+        [HttpGet]
+        [Route("Find")]
+        public IEnumerable<Product> Find(string text)
+        {
+            return work.ProductRepo.Find(text);
         }
         [HttpDelete]
         public bool Remove(int id)

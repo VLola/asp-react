@@ -7,11 +7,23 @@ export class Home extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { products: [], loading: true };
+    this.state = { products: [], search: "", loading: true };
+    this.changeSearch = this.changeSearch.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
     this.populateProductData();
+  }
+
+  changeSearch(event) {
+    this.setState({search: event.target.value});
+  }
+
+  async search(){
+    const response = await fetch('product/Find?text=' + this.state.search);
+    const data = await response.json();
+    this.setState({ products: data, loading: false });
   }
 
   static renderProductsTable(products) {
@@ -19,7 +31,7 @@ export class Home extends Component {
       <div className='div__products'>
         {products.map(product =>
           <Product key={product.id} product={product} change={false}/>
-          )}
+        )}
       </div>
     );
   }
@@ -32,6 +44,11 @@ export class Home extends Component {
     return (
       <div>
       <h1>Products</h1>
+        <div>
+          <label htmlFor="search">Search:</label>
+          <input name='search' value={this.state.search} onChange={this.changeSearch}></input>
+          <button onClick={this.search}>Find</button>
+        </div>
       <div>
         {contents}
       </div>
