@@ -37,3 +37,11 @@
 .label__add{
   font-size: x-large;
 }
+
+.div__search{
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-evenly;
+}

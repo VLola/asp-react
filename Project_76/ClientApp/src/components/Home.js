@@ -44,7 +44,7 @@ export class Home extends Component {
     return (
       <div>
       <h1>Products</h1>
-        <div>
+        <div className='div__search'>
           <label htmlFor="search">Search:</label>
           <input name='search' value={this.state.search} onChange={this.changeSearch}></input>
           <button onClick={this.search}>Find</button>

@@ -5,7 +5,12 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project_75", "Project_75\Project_75.csproj", "{0EDA98B6-70E9-4474-A81B-75BF69A24F3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project_76", "Project_76\Project_76.csproj", "{B6CB421F-8943-45BE-B107-2CE098502006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project_76", "Project_76\Project_76.csproj", "{B6CB421F-8943-45BE-B107-2CE098502006}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{49B3F28C-887D-4304-85E4-0E184FCA298D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
