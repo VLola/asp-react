@@ -1,0 +1,10 @@
+.div__flex{
+    display: flex;
+    justify-content: center;
+}
+.div__container{
+    margin: 2%;
+}
+.div__container span{
+    padding: 20px;
+}
