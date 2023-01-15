@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Project_75.Models;
+using System.Net;
+using System.Text.Json;
 
 namespace Project_75.Controllers
 {
@@ -12,12 +14,18 @@ namespace Project_75.Controllers
         [HttpGet]
         public IEnumerable<BetModel> Get()
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
-            if(!System.IO.File.Exists(pathFiles + "symbols"))
+            List<BetModel> list = new();
+            //Console.WriteLine(Directory.GetCurrentDirectory());
+            if (System.IO.File.Exists(pathFiles + "bets"))
             {
-
+                int i = 0;
+                foreach (var item in JsonSerializer.Deserialize<List<BetModel>>(System.IO.File.ReadAllText(pathFiles + "bets")))
+                {
+                    i++;
+                    list.Add(item);
+                    if (i > 100) break;
+                }
             }
-            List<BetModel>? list = new();
             //using (var client = new WebClient())
             //{
             //    string json = client.DownloadString(path);
