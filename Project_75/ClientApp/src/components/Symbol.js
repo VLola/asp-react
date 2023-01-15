@@ -5,7 +5,7 @@ export class Symbol extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { symbols: [], loading: true, bets: [], selectedBets: [] };
+    this.state = { symbols: [], loading: true, bets: [], stopLosses: [], selectedBets: [] };
   }
 
   componentDidMount() {
@@ -15,11 +15,13 @@ export class Symbol extends Component {
 
 
   async click(){
-    let val = document.getElementById("selectSymbol").value;
+    let symbol = document.getElementById("selectSymbol").value;
     
-    this.state.selectedBets = this.state.bets.filter(bet=>bet.symbol == val);
+    let sl = (Number)(document.getElementById("selectStopLoss").value);
     
-    this.setState({ loading: false });
+    let selectedBets = this.state.bets.filter(bet=>bet.symbol === symbol && bet.stopLoss === sl);
+    
+    this.setState({ selectedBets: selectedBets });
     
   }
 
@@ -45,15 +47,24 @@ export class Symbol extends Component {
         <h1 id="tabelLabel" >Symbols</h1>
         <p>This component demonstrates fetching data from the server.</p>
           {contents}
+          
+        <select id='selectStopLoss'>
+        {this.state.stopLosses.map(sl =>
+            <option key={sl} value={sl}>
+              {sl}
+            </option>
+          )}
+        </select>
         <button onClick={this.click}>Click</button>
+        
         <div>
-        {this.state.selectedBets.map(bet =>
-          <div key={bet.number+bet.symbol+bet.openTime}>
-            <div>{bet.number+bet.symbol}</div>
-            <div>{bet.symbol}</div>
-          </div>
-        )}
-      </div>
+          {this.state.selectedBets.map(bet =>
+            <div key={bet.number+bet.symbol+bet.openTime}>
+              <div>{bet.number+bet.symbol}</div>
+              <div>{bet.symbol}</div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -65,6 +76,10 @@ export class Symbol extends Component {
     
     const responseBets = await fetch('bet');
     const dataBets = await responseBets.json();
-    this.setState({ symbols: data , bets: dataBets, loading: false });
+
+    const responseSL = await fetch('bet/GetStopLoses');
+    const dataStopLoses = await responseSL.json();
+
+    this.setState({ symbols: data , bets: dataBets, stopLosses: dataStopLoses , loading: false });
   }
 }

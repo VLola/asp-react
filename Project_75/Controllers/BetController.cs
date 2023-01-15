@@ -18,13 +18,14 @@ namespace Project_75.Controllers
             //Console.WriteLine(Directory.GetCurrentDirectory());
             if (System.IO.File.Exists(pathFiles + "bets"))
             {
-                int i = 0;
-                foreach (var item in JsonSerializer.Deserialize<List<BetModel>>(System.IO.File.ReadAllText(pathFiles + "bets")))
-                {
-                    i++;
-                    list.Add(item);
-                    if (i > 100) break;
-                }
+                list = JsonSerializer.Deserialize<List<BetModel>>(System.IO.File.ReadAllText(pathFiles + "bets"));
+                //int i = 0;
+                //foreach (var item in JsonSerializer.Deserialize<List<BetModel>>(System.IO.File.ReadAllText(pathFiles + "bets")))
+                //{
+                //    i++;
+                //    list.Add(item);
+                //    if (i > 100) break;
+                //}
             }
             //using (var client = new WebClient())
             //{
@@ -32,6 +33,12 @@ namespace Project_75.Controllers
             //    list = JsonSerializer.Deserialize<List<BetModel>>(json);
             //}
             return list;
+        }
+        [HttpGet("GetStopLoses")]
+        public IEnumerable<double> GetStopLoses()
+        {
+            double[] array = { 0.5, 1, 1.5, 2 };
+            return array;
         }
     }
 }
