@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Bets } from "./Bets";
 import './Symbol.css';
 
 export class Symbol extends Component {
@@ -26,7 +27,10 @@ export class Symbol extends Component {
     
     let selectedBets = this.state.bets.filter(bet=>bet.symbol === symbol && bet.stopLoss === sl);
     
-    this.setState({ selectedBets: selectedBets });
+    let numbers = selectedBets.map(bet=>bet.number);
+    let dataNumbers = Array.from(new Set(numbers));
+    
+    this.setState({ symbol: symbol, numbers: dataNumbers, selectedBets: selectedBets });
 
   }
 
@@ -62,16 +66,17 @@ export class Symbol extends Component {
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
+              <th style={{width: "30%"}}>Symbol</th>
               <th>Number</th>
               <th>Profit</th>
+              <th>Count</th>
+              <th>Count +</th>
+              <th>Count -</th>
             </tr>
           </thead>
           <tbody>
             {this.state.numbers.map(number =>
-              <tr key={number}>
-                <td>{number}</td>
-                <td>{this.add(this.state.selectedBets.find(bet=>bet.number === number).map(bet=>bet.profit))}</td>
-              </tr>
+              <Bets key={number+this.state.symbol} bets={this.state.selectedBets.filter(bet=>bet.number === number)} number={number}/>
             )}
           </tbody>
         </table>
@@ -97,10 +102,6 @@ export class Symbol extends Component {
     const responseSL = await fetch('bet/GetStopLoses');
     const dataStopLoses = await responseSL.json();
 
-    
-    const numbers = dataBets.map(bet=>bet.number);
-    const dataNumbers = Array.from(new Set(numbers));
-
-    this.setState({ symbols: data , bets: dataBets, stopLosses: dataStopLoses, numbers: dataNumbers });
+    this.setState({ symbols: data , bets: dataBets, stopLosses: dataStopLoses });
   }
 }

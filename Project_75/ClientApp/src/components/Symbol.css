@@ -8,3 +8,6 @@
 .div__container span{
     padding: 20px;
 }
+.tr__bet:hover{
+    font-size: 150%;
+}
