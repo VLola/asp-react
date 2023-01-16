@@ -12,16 +12,46 @@
     font-size: 150%;
 }
 .tr__chart{
-    background-color: white;
     position: fixed;
-    top: 0;
+    top: 0%;
+    left:0;
     display: block;
     text-align: center;
     z-index: 9999;
+    animation-name: animateTr;
+    animation-duration: 1s;
+    background-color: white;
 }
 .td__chart{
     width: 100%;
+    background-color: white;
+}
+.td-0{
+    width: 0%;
 }
 .div-100{
+    background-color: white;
+    border: 1px solid black;
     height: 100vh;
+    animation-name: animateDiv;
+    animation-duration: 1s;
+}
+
+@keyframes animateDiv {
+    0%   {
+        height: 0vh;
+    }
+    100% {
+        height: 100vh;
+    }
+  }
+
+@keyframes animateTr {
+    0%  {
+        top: 50%;
+    }
+    100% {
+        top: 0%;
+        background-color: white;
+    }
 }

@@ -44,11 +44,7 @@ export class Bets extends Component {
           </VictoryChart>
           </div>
         </td>
-        <td style={{width:"0px"}}></td>
-        <td style={{width:"0px"}}></td>
-        <td style={{width:"0px"}}></td>
-        <td style={{width:"0px"}}></td>
-        <td style={{width:"0px"}}></td>
+        <td className='td-0'></td>
       </tr>
       );
     }
