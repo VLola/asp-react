@@ -80,14 +80,6 @@ export class Symbol extends Component {
             )}
           </tbody>
         </table>
-          <div>
-            {this.state.selectedBets.map(bet =>
-              <div key={bet.number+bet.symbol+bet.openTime}>
-                <div>{bet.number+bet.symbol}</div>
-                <div>{bet.symbol}</div>
-              </div>
-            )}
-          </div>
       </div>
     );
   }

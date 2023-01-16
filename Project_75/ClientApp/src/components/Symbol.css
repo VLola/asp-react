@@ -11,3 +11,17 @@
 .tr__bet:hover{
     font-size: 150%;
 }
+.tr__chart{
+    background-color: white;
+    position: fixed;
+    top: 0;
+    display: block;
+    text-align: center;
+    z-index: 9999;
+}
+.td__chart{
+    width: 100%;
+}
+.div-100{
+    height: 100vh;
+}
