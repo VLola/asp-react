@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart } from 'victory';
-const data = [
-  {quarter: 1, earnings: 13000},
-  {quarter: 2, earnings: 16500},
-  {quarter: 3, earnings: 14250},
-  {quarter: 4, earnings: 19000}
-];
+import { VictoryGroup, VictoryChart, VictoryLine, VictoryScatter } from 'victory';
 export class Bets extends Component {
   static displayName = Bets.name;
 
@@ -16,7 +10,17 @@ export class Bets extends Component {
     let count = props.bets.length;
     let countPlus = props.bets.filter(bet=>bet.profit > 0).length;
     let countMinus = props.bets.filter(bet=>bet.profit < 0).length;
-    this.state = { symbol: props.bets[0].symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
+    let dataX = props.bets.map(bet=>bet.closeTime);
+    let dataY = props.bets.map(bet=>bet.profit);
+    let data = [];
+    let i = 0;
+    let sum = 0;
+    dataX.forEach(element => {
+      sum+=dataY[i];
+      data.push({x:element, y:sum});
+      i++;
+    });
+    this.state = { data: data, symbol: props.bets[0].symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
     this.click = this.click.bind(this);
     this.leave = this.leave.bind(this);
   }
@@ -35,13 +39,10 @@ export class Bets extends Component {
       <tr className='tr__chart' onClick={this.leave}>
         <td className='td__chart'>
           <div className='div-100'>
-            <VictoryChart>
-            <VictoryBar
-              data={data}
-              x="quarter"
-              y="earnings"
-            />
-          </VictoryChart>
+            <VictoryGroup data={this.state.data}>
+              <VictoryLine/>
+              <VictoryScatter/>
+            </VictoryGroup>
           </div>
         </td>
         <td className='td-0'></td>
