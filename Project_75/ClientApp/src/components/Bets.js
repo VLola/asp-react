@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { VictoryGroup, VictoryChart, VictoryLine, VictoryScatter } from 'victory';
+
 export class Bets extends Component {
   static displayName = Bets.name;
 
@@ -17,10 +18,10 @@ export class Bets extends Component {
     let sum = 0;
     dataX.forEach(element => {
       sum+=dataY[i];
-      data.push({x:element, y:sum});
+      data.push({x:element, y:sum, k:dataY[i]});
       i++;
     });
-    this.state = { data: data, symbol: props.bets[0].symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
+    this.state = { hovered: false, data: data, symbol: props.bets[0].symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
     this.click = this.click.bind(this);
     this.leave = this.leave.bind(this);
   }
@@ -39,9 +40,12 @@ export class Bets extends Component {
       <tr className='tr__chart' onClick={this.leave}>
         <td className='td__chart'>
           <div className='div-100'>
-            <VictoryGroup data={this.state.data}>
-              <VictoryLine/>
-              <VictoryScatter/>
+            <VictoryGroup 
+            data={this.state.data}
+            labels={({ datum }) => datum.k}
+            style={{ labels: { fill: "gray" } }}>
+              <VictoryLine style={{ data: { stroke: "lightgray" } }}/>
+              <VictoryScatter />
             </VictoryGroup>
           </div>
         </td>
