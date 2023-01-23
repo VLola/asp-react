@@ -85,7 +85,7 @@ export class Symbol extends Component {
           </thead>
           <tbody>
             {this.state.numbers.map(number =>
-              <Bets key={number+this.state.symbol} bets={this.state.selectedBets.filter(bet=>bet.number === number)} number={number}/>
+              <Bets key={number+this.state.symbol} bets={this.state.selectedBets.filter(bet=>bet.number === number)} number={number} symbol={this.state.symbol}/>
             )}
           </tbody>
         </table>

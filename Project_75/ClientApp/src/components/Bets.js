@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis } from 'victory';
+import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis,VictoryTooltip, VictoryTheme } from 'victory';
 
 function NewBet(bet, sum){
   return {
     x: bet.openTime
     , y: sum
+    , symbol: bet.symbol
     , oenTime: bet.openTime
     , closeTime: bet.closeTime
     , profit: bet.profit
@@ -12,7 +13,21 @@ function NewBet(bet, sum){
   }
 }
 
+const Point = ({ x, y, datum }) => {
+  const [hovered, setHovered] = React.useState(false);
 
+  return (
+    <circle
+      cx={x}
+      cy={y}
+      r={3}
+      onClick={() => console.log(datum.symbol)}
+      fill={hovered ? "orange" : "black"}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    />
+  );
+};
 
 export class Bets extends Component {
   static displayName = Bets.name;
@@ -26,7 +41,7 @@ export class Bets extends Component {
     let countMinus = props.bets.filter(bet=>bet.profit < 0).length;
     let sum = 0;
     let data = props.bets.map(bet=>NewBet(bet, sum += bet.profit));
-    this.state = { hovered: false, data: data, symbol: props.bets[0].symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
+    this.state = { hovered: false, data: data, symbol: props.symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
     this.click = this.click.bind(this);
     this.leave = this.leave.bind(this);
   }
@@ -46,16 +61,22 @@ export class Bets extends Component {
       <tr className='tr__chart'>
         <td className='td__chart'>
           <div className='div-100'>
-            <VictoryChart 
+            <VictoryChart  theme={VictoryTheme.material} padding={ {top: 80, bottom: 20} } 
+              width={500}
               containerComponent={
                 <VictoryZoomVoronoiContainer
                   mouseFollowTooltips
                   labels={({ datum }) => datum.info}
+                  labelComponent={<VictoryTooltip flyoutPadding={{left: 20, right: 20}} center={{x:0 , y:0}}/>}
                 />
               }
             >
-              <VictoryLine data={this.state.data}
-                  style={{ labels: {  fontSize: "10px" } }}/>
+              <VictoryScatter data={this.state.data}
+                  style={{ labels: {  fontSize: "10px" } }}
+                  dataComponent={
+                    <Point />
+                  }
+                    />
               <VictoryAxis dependentAxis/>
             </VictoryChart>
             <div>
@@ -90,11 +111,7 @@ export class Bets extends Component {
           <td>{this.state.symbol}</td>
           <td>
             <div style={{width:"50px",height:"25px"}}>
-              <VictoryGroup 
-              data={this.state.data}>
-                <VictoryLine style={{ data: { stroke: "#000000", strokeWidth: 15 } }}/>
-                <VictoryScatter />
-              </VictoryGroup>
+                <VictoryLine data={this.state.data} style={{ data: { stroke: "#000000", strokeWidth: 15 } }}/>
             </div>
           </td>
           <td>{this.state.number}</td>
