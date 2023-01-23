@@ -24,13 +24,21 @@ export class Symbol extends Component {
     let symbol = document.getElementById("selectSymbol").value;
     
     let sl = (Number)(document.getElementById("selectStopLoss").value);
+    if(symbol == "All"){
+      let selectedBets = this.state.bets.filter(bet=>bet.stopLoss === sl);
+      let numbers = selectedBets.map(bet=>bet.number);
+      let dataNumbers = Array.from(new Set(numbers));
+      
+      this.setState({ symbol: symbol, numbers: dataNumbers, selectedBets: selectedBets });
+    }
+    else{
+      let selectedBets = this.state.bets.filter(bet=>bet.symbol === symbol && bet.stopLoss === sl);
+      let numbers = selectedBets.map(bet=>bet.number);
+      let dataNumbers = Array.from(new Set(numbers));
+      
+      this.setState({ symbol: symbol, numbers: dataNumbers, selectedBets: selectedBets });
+    }
     
-    let selectedBets = this.state.bets.filter(bet=>bet.symbol === symbol && bet.stopLoss === sl);
-    
-    let numbers = selectedBets.map(bet=>bet.number);
-    let dataNumbers = Array.from(new Set(numbers));
-    
-    this.setState({ symbol: symbol, numbers: dataNumbers, selectedBets: selectedBets });
 
   }
 
@@ -63,10 +71,11 @@ export class Symbol extends Component {
           </div>
           
         </div>
-        <table className='table table-striped' aria-labelledby="tabelLabel">
-          <thead>
+        <table className='table' aria-labelledby="tabelLabel">
+          <thead style={{position:"sticky", top: 0, backgroundColor:"lightgray"}}>
             <tr>
-              <th style={{width: "30%"}}>Symbol</th>
+              <th style={{width: "20%"}}>Symbol</th>
+              <th>Chart</th>
               <th>Number</th>
               <th>Profit</th>
               <th>Count</th>
@@ -86,8 +95,8 @@ export class Symbol extends Component {
 
   async populateSymbolData() {
     const response = await fetch('symbol');
-    const data = await response.json();
-    
+    let data = await response.json();
+    data.push({name:"All"});
     const responseBets = await fetch('bet');
     const dataBets = await responseBets.json();
 

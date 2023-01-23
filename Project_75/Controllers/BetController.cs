@@ -19,6 +19,8 @@ namespace Project_75.Controllers
             if (System.IO.File.Exists(pathFiles + "bets"))
             {
                 list = JsonSerializer.Deserialize<List<BetModel>>(System.IO.File.ReadAllText(pathFiles + "bets"));
+                List<BetModel> sortedList = list.OrderBy(o => o.CloseTime).ToList();
+                return sortedList;
                 //int i = 0;
                 //foreach (var item in JsonSerializer.Deserialize<List<BetModel>>(System.IO.File.ReadAllText(pathFiles + "bets")))
                 //{
