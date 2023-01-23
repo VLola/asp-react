@@ -1,58 +1,43 @@
-.div__flex{
-    display: flex;
-    justify-content: center;
+.div__symbol {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 1%;
+  margin: 1%;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  overflow: hidden;
 }
-.div__container{
-    margin: 2%;
+.div__symbol:hover{
+  box-shadow:
+       inset 0 -3em 3em rgba(0,0,0,0.1),
+             0 0  0 0px rgb(255,255,255),
+             0.3em 0.3em 1em rgba(0,0,0,0.3);
 }
-.div__container span{
-    padding: 20px;
-}
-.tr__bet:hover{
-    font-size: 150%;
-}
-.tr__chart{
-    position: fixed;
-    top: 0%;
-    left:0;
-    display: block;
-    text-align: center;
-    z-index: 9999;
-    animation-name: animateTr;
-    animation-duration: 1s;
-    background-color: white;
-}
-.td__chart{
-    width: 100%;
-    background-color: white;
-}
-.td-0{
-    width: 0%;
-}
-.div-100{
-    display: flex;
-    background-color: white;
-    border: 1px solid black;
-    height: 100vh;
-    animation-name: animateDiv;
-    animation-duration: 1s;
+.div__chart{
+  background-color: white;
+  width: 99%;
+  top: 0%;
+  left:0;
+  display: block;
+  text-align: center;
+  border: 8px solid black;
+  border-radius: 25px;
+  z-index: 9999;
+  animation-name: animateChart;
+  animation-duration: 1s;
+  height: 80vh;
 }
 
-@keyframes animateDiv {
-    0%   {
-        height: 0vh;
-    }
-    100% {
-        height: 100vh;
-    }
+@keyframes animateChart {
+  0%  {
+      top: 50%;
+      height: 0vh;
   }
-
-@keyframes animateTr {
-    0%  {
-        top: 50%;
-    }
-    100% {
-        top: 0%;
-        background-color: white;
-    }
+  100% {
+      top: 0%;
+      height: 80vh;
+  }
 }

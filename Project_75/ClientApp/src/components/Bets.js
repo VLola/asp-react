@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Symbol } from "./Symbol";
+import { Symbols } from "./Symbols";
 import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis,VictoryTooltip, VictoryTheme } from 'victory';
 
-function NewBet(bet, sum){
+function newBet(bet, sum){
   return {
     x: bet.openTime
     , y: sum
@@ -13,6 +15,34 @@ function NewBet(bet, sum){
   }
 }
 
+function getSymbol(){
+  let div = document.createElement('div').innerText = "valik";
+  return(
+    div
+  );
+}
+
+function clickBet(bet){
+  console.log(bet);
+  // <h1 style={{position: "fixed"}}>{bet}</h1>
+  var newWin = window.open('/klines', 'example', 'width=600,height=400');
+
+  // alert(newWin.location.href); // (*) about:blank, загрузка ещё не началась
+
+  newWin.onload = function() {
+
+    // создать div в документе нового окна
+    // var div = newWin.document.createElement('div'),
+    //     body = newWin.document.body;
+
+
+    // div.append(<Symbol symbol={bet}/>);
+    // body.insertBefore(div, body.firstChild);
+    
+    newWin.document.body.append(getSymbol());
+  }
+}
+
 const Point = ({ x, y, datum }) => {
   const [hovered, setHovered] = React.useState(false);
 
@@ -21,7 +51,7 @@ const Point = ({ x, y, datum }) => {
       cx={x}
       cy={y}
       r={3}
-      onClick={() => console.log(datum.symbol)}
+      onClick={() => clickBet(datum.symbol)}
       fill={hovered ? "orange" : "black"}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -40,7 +70,7 @@ export class Bets extends Component {
     let countPlus = props.bets.filter(bet=>bet.profit > 0).length;
     let countMinus = props.bets.filter(bet=>bet.profit < 0).length;
     let sum = 0;
-    let data = props.bets.map(bet=>NewBet(bet, sum += bet.profit));
+    let data = props.bets.map(bet=>newBet(bet, sum += bet.profit));
     this.state = { hovered: false, data: data, symbol: props.symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
     this.click = this.click.bind(this);
     this.leave = this.leave.bind(this);
@@ -61,8 +91,11 @@ export class Bets extends Component {
       <tr className='tr__chart'>
         <td className='td__chart'>
           <div className='div-100'>
-            <VictoryChart  theme={VictoryTheme.material} padding={ {top: 80, bottom: 20} } 
+            <VictoryChart 
+              theme={VictoryTheme.material} 
+              padding={ {top: 80, bottom: 20} } 
               width={500}
+              domainPadding={{ y: 50, x: 50 }}
               containerComponent={
                 <VictoryZoomVoronoiContainer
                   mouseFollowTooltips

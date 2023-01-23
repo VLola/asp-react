@@ -1,0 +1,67 @@
+.div__flex{
+    display: flex;
+    justify-content: center;
+}
+.div__container{
+    margin: 2%;
+}
+.div__container span{
+    padding: 20px;
+}
+.tr__bet:hover{
+    font-size: 150%;
+}
+.tr__chart{
+    position: fixed;
+    top: 0%;
+    left:0;
+    display: block;
+    text-align: center;
+    z-index: 9999;
+    animation-name: animateTr;
+    animation-duration: 1s;
+    background-color: white;
+}
+.td__chart{
+    width: 100%;
+    background-color: white;
+}
+.td-0{
+    width: 0%;
+}
+.div-100{
+    display: flex;
+    background-color: white;
+    border: 1px solid black;
+    height: 98vh;
+    animation-name: animateDiv;
+    animation-duration: 1s;
+}
+
+#selectSymbol{
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 20%;
+    font-size: x-large;
+    margin-inline: 20px;
+}
+
+@keyframes animateDiv {
+    0%   {
+        height: 0vh;
+    }
+    100% {
+        height: 98vh;
+    }
+  }
+
+@keyframes animateTr {
+    0%  {
+        top: 50%;
+    }
+    100% {
+        top: 0%;
+        background-color: white;
+    }
+}
