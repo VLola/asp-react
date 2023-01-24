@@ -66,7 +66,7 @@ export class Symbols extends Component {
               )}
             </select>
           <table className='table' aria-labelledby="tabelLabel">
-            <thead style={{position:"sticky", top: 0, backgroundColor:"lightgray"}}>
+            <thead style={{position:"sticky", top: 0, backgroundColor:"lightgray", zIndex: 9997}}>
               <tr>
                 <th style={{width: "20%"}}>Symbol</th>
                 <th>Chart</th>

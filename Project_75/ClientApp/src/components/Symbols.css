@@ -17,7 +17,7 @@
     left:0;
     display: block;
     text-align: center;
-    z-index: 9999;
+    z-index: 9998;
     animation-name: animateTr;
     animation-duration: 1s;
     background-color: white;

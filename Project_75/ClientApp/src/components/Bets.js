@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Symbol } from "./Symbol";
 import { MyWindowPortal } from "./MyWindowPortal";
 import { Symbols } from "./Symbols";
-import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis,VictoryTooltip, VictoryTheme } from 'victory';
+import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis,VictoryTooltip, VictoryTheme, VictoryZoomContainer } from 'victory';
 
 function newBet(bet, sum){
   return {
@@ -37,6 +37,7 @@ let Point = ({ x, y, datum }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
+        <div style={{ zIndex: 9999}}>
         <MyWindowPortal setSelected={setSelected}>
             <Symbol key={datum.openTime} 
             bet={datum}
@@ -44,6 +45,7 @@ let Point = ({ x, y, datum }) => {
             closeTime={new Date(datum.closeTime).getTime()}
             />
           </MyWindowPortal>
+        </div>
       </circle>
     );
   }

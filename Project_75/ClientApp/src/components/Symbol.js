@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import './Symbol.css';
-import { VictoryChart, VictoryCandlestick, VictoryLabel, VictoryAxis, VictoryTooltip, VictoryScatter, VictoryGroup, VictoryTheme } from 'victory';
+import { VictoryChart, VictoryCandlestick, VictoryLabel, VictoryAxis, VictoryTooltip, VictoryScatter, VictoryZoomContainer, VictoryTheme } from 'victory';
 
 
 
@@ -14,11 +13,19 @@ export class Symbol extends Component {
       , klines: []
       , closeTime: (props.closeTime + (props.bet.interval * 60 * 1000 * 10))
       , openTime: (props.openTime - (props.bet.interval * 60 * 1000 * 10))
-      , points: [{x: props.openTime, y: props.bet.openPrice},{x: props.closeTime, y: props.bet.closePrice}] 
       , interval: props.bet.interval
+      , points: [
+        {
+          x: props.openTime
+          , y: props.bet.openPrice
+          , label: `openTime: ${new Date(props.openTime).toLocaleString()}\nopenPrice: ${props.bet.openPrice}`
+        },{
+          x: props.closeTime
+          , y: props.bet.closePrice
+          , label: `closeTime: ${new Date(props.closeTime).toLocaleString()}\nclosePrice: ${props.bet.closePrice}`
+        }] 
     };
     this.newKline = this.newKline.bind(this);
-    console.log(props.bet.interval);
   }
 
   async componentDidMount() {
@@ -41,18 +48,30 @@ export class Symbol extends Component {
 
   render() {
     return (
-      <div className='div__chart'>
-        <VictoryChart>
+      <div>
+        <VictoryChart
+              theme={VictoryTheme.material} 
+              padding={ {top: 80, bottom: 20} } 
+              width={400}
+              domainPadding={{ y: 50, x: 50 }}
+            >
           <VictoryLabel text={this.state.symbol} x={225} y={30} textAnchor="middle"/>
           <VictoryAxis dependentAxis/>
           <VictoryCandlestick
               candleColors={{ positive: "lightgreen", negative: "pink" }}
               labels={({ datum }) => datum.label}
-              labelComponent={<VictoryTooltip flyoutWidth={150}/>}
+              labelComponent={<VictoryTooltip flyoutPadding={{left: 20, right: 20}} center={{x:15 , y:40}}/>}
               data={this.state.klines}
             />
             
-          <VictoryScatter symbol="diamond" data={this.state.points} style={{ data: { fill: "cyan", stroke: "blue", strokeWidth: 1 }}}/>
+          <VictoryScatter 
+            symbol="diamond" 
+            data={this.state.points} 
+            
+            labels={({ datum }) => datum.label}
+            labelComponent={<VictoryTooltip flyoutPadding={{left: 20, right: 20}} center={{x:40 , y:40}}/>}
+            style={{ data: { fill: "cyan", stroke: "blue", strokeWidth: 1 }}}
+          />
           
         </VictoryChart>
             
