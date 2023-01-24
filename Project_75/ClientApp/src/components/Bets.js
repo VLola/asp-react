@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Symbol } from "./Symbol";
+import { MyWindowPortal } from "./MyWindowPortal";
 import { Symbols } from "./Symbols";
 import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis,VictoryTooltip, VictoryTheme } from 'victory';
 
@@ -15,48 +16,44 @@ function newBet(bet, sum){
   }
 }
 
-function getSymbol(){
-  let div = document.createElement('div').innerText = "valik";
-  return(
-    div
-  );
-}
-
-function clickBet(bet){
-  console.log(bet);
-  // <h1 style={{position: "fixed"}}>{bet}</h1>
-  var newWin = window.open('/klines', 'example', 'width=600,height=400');
-
-  // alert(newWin.location.href); // (*) about:blank, загрузка ещё не началась
-
-  newWin.onload = function() {
-
-    // создать div в документе нового окна
-    // var div = newWin.document.createElement('div'),
-    //     body = newWin.document.body;
-
-
-    // div.append(<Symbol symbol={bet}/>);
-    // body.insertBefore(div, body.firstChild);
-    
-    newWin.document.body.append(getSymbol());
-  }
-}
-
 const Point = ({ x, y, datum }) => {
   const [hovered, setHovered] = React.useState(false);
-
-  return (
-    <circle
-      cx={x}
-      cy={y}
-      r={3}
-      onClick={() => clickBet(datum.symbol)}
-      fill={hovered ? "orange" : "black"}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    />
-  );
+  const [selected, setSelected] = React.useState(false);
+  
+  if(selected){
+    return(
+      <circle
+        cx={x}
+        cy={y}
+        r={5}
+        stroke={hovered ? "purple" : "white"}
+        strokeWidth={2}
+        fill={selected ? "cyan" : "magenta"}
+        onClick={() => setSelected(!selected)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <MyWindowPortal setSelected={setSelected}>
+            <Symbol symbol={datum.symbol}/>
+          </MyWindowPortal>
+      </circle>
+    );
+  }
+  else{
+    return (
+      <circle
+        cx={x}
+        cy={y}
+        r={5}
+        stroke={hovered ? "purple" : "white"}
+        strokeWidth={2}
+        fill={selected ? "cyan" : "magenta"}
+        onClick={() => setSelected(!selected)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      />
+    );
+  }
 };
 
 export class Bets extends Component {

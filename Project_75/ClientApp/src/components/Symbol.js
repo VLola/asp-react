@@ -9,16 +9,15 @@ export class Symbol extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { symbol: props.symbol, selected: false, klines: [] };
+    this.state = { symbol: props.symbol, klines: [] };
     this.newKline = this.newKline.bind(this);
-    console.log(props.symbol);
   }
 
   async componentDidMount() {
     let response = await fetch('https://fapi.binance.com/fapi/v1/klines?symbol='+this.state.symbol+'&interval=1m&limit=100');
     let data = await response.json();
     let klines = data.map(kline=>this.newKline(kline));
-    this.setState({ klines: klines, selected: true });
+    this.setState({ klines: klines });
   }
 
 
@@ -34,34 +33,19 @@ export class Symbol extends Component {
 
   render() {
     return (
-      <div style={{backgroundColor:"red", width: "100px", height: "100px"}}>
-        valik
+      <div className='div__chart'>
+        <VictoryChart >
+          <VictoryLabel text={this.state.symbol} x={225} y={30} textAnchor="middle"/>
+          <VictoryAxis dependentAxis/>
+          <VictoryCandlestick
+            candleColors={{ positive: "green", negative: "red" }}
+            labels={({ datum }) => datum.label}
+            labelComponent={<VictoryTooltip flyoutWidth={150}/>}
+            data={this.state.klines}
+          />
+        </VictoryChart>
+            
       </div>
     );
-    if(this.state.selected){
-      return (
-        <div className='div__chart'>
-          <VictoryChart >
-            <VictoryLabel text={this.state.symbol} x={225} y={30} textAnchor="middle"/>
-            <VictoryAxis dependentAxis/>
-            <VictoryCandlestick
-              candleColors={{ positive: "green", negative: "red" }}
-              labels={({ datum }) => datum.label}
-              labelComponent={<VictoryTooltip flyoutWidth={150}/>}
-              data={this.state.klines}
-            />
-          </VictoryChart>
-              
-        </div>
-      );
-    }
-    else{
-      return (
-        <div className='div__symbol'>
-          <div>{this.state.symbol}</div>
-        </div>
-      );
-    }
   }
-
 }

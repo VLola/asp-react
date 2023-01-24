@@ -7,13 +7,12 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const context =  [
   "/bet",
   "/symbol",
-  "/symbol-klines",
 ];
 
 module.exports = function(app) {
   const appProxy = createProxyMiddleware(context, {
     target: target,
-    secure: true,
+    secure: false,
     headers: {
       Connection: 'Keep-Alive'
     }
