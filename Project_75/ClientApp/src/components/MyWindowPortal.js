@@ -17,10 +17,7 @@ export class MyWindowPortal extends React.Component {
 
   componentDidMount() {
     // Step 3: open a new browser window and store a reference to it
-    this.externalWindow = window.open('', 'example', 'width=600,height=400,left=200,top=200');
-    this.externalWindow.onclose = function(){
-      this.componentWillUnmount();
-    }
+    this.externalWindow = window.open('', '', 'width=600,height=400,left=200,top=200');
     // Step 4: append the container <div> (that has props.chi.dren append to it) to 
     // the body of the new MyWindowPortal
     this.externalWindow.document.body.appendChild(this.containeEl);

@@ -9,16 +9,20 @@ function newBet(bet, sum){
     x: bet.openTime
     , y: sum
     , symbol: bet.symbol
-    , oenTime: bet.openTime
+    , openTime: bet.openTime
     , closeTime: bet.closeTime
+    , openPrice: bet.openPrice
+    , closePrice: bet.closePrice
+    , interval: bet.interval
     , profit: bet.profit
     , info: `${bet.symbol}\nopen: ${bet.openPrice}\nclose: ${bet.closePrice}\n${new Date(bet.openTime).toLocaleString()}\n${new Date(bet.closeTime).toLocaleString()}\nprofit: ${bet.profit}`
   }
 }
 
-const Point = ({ x, y, datum }) => {
-  const [hovered, setHovered] = React.useState(false);
-  const [selected, setSelected] = React.useState(false);
+let Point = ({ x, y, datum }) => {
+  let [hovered, setHovered] = React.useState(false);
+  let [selected, setSelected] = React.useState(false);
+
   
   if(selected){
     return(
@@ -34,7 +38,11 @@ const Point = ({ x, y, datum }) => {
         onMouseLeave={() => setHovered(false)}
       >
         <MyWindowPortal setSelected={setSelected}>
-            <Symbol symbol={datum.symbol}/>
+            <Symbol key={datum.openTime} 
+            bet={datum}
+            openTime={new Date(datum.openTime).getTime()} 
+            closeTime={new Date(datum.closeTime).getTime()}
+            />
           </MyWindowPortal>
       </circle>
     );
