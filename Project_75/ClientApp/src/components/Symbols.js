@@ -71,7 +71,9 @@ export class Symbols extends Component {
                 <th style={{width: "20%"}}>Symbol</th>
                 <th>Chart</th>
                 <th>Number</th>
-                <th>Profit</th>
+                <th>SL (%)</th>
+                <th>Time (m)</th>
+                <th>Profit (%)</th>
                 <th>Count</th>
                 <th>Count +</th>
                 <th>Count -</th>

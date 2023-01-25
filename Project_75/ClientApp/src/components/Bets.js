@@ -6,7 +6,7 @@ import { VictoryGroup, createContainer, VictoryLine, VictoryScatter, VictoryChar
 
 function newBet(bet, sum){
   return {
-    x: bet.openTime
+    x: bet.closeTime
     , y: sum
     , symbol: bet.symbol
     , openTime: bet.openTime
@@ -37,7 +37,6 @@ let Point = ({ x, y, datum }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <div style={{ zIndex: 9999}}>
         <MyWindowPortal setSelected={setSelected}>
             <Symbol key={datum.openTime} 
             bet={datum}
@@ -45,7 +44,6 @@ let Point = ({ x, y, datum }) => {
             closeTime={new Date(datum.closeTime).getTime()}
             />
           </MyWindowPortal>
-        </div>
       </circle>
     );
   }
@@ -78,7 +76,21 @@ export class Bets extends Component {
     let countMinus = props.bets.filter(bet=>bet.profit < 0).length;
     let sum = 0;
     let data = props.bets.map(bet=>newBet(bet, sum += bet.profit));
-    this.state = { hovered: false, data: data, symbol: props.symbol, bets: props.bets, number: props.number, profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
+    let x = data[0].openTime;
+    let bet = data[0];
+    data.unshift({
+      x: x
+      , y: 0
+      , symbol: bet.symbol
+      , openTime: bet.openTime
+      , closeTime: bet.closeTime
+      , openPrice: bet.openPrice
+      , closePrice: bet.closePrice
+      , interval: bet.interval
+      , profit: 0
+      , info: "Start"
+    });
+    this.state = { hovered: false, data: data, symbol: props.symbol, bets: props.bets, number: props.number, stopLoss: props.bets[0].stopLoss, time: (props.bets[0].interval * props.bets[0].close), profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
     this.click = this.click.bind(this);
     this.leave = this.leave.bind(this);
   }
@@ -139,6 +151,8 @@ export class Bets extends Component {
             </div>
           </td>
           <td>{this.state.number}</td>
+          <td>{this.state.stopLoss}</td>
+          <td>{this.state.time}</td>
           <td style={{color:"red"}}>{this.state.profit}</td>
           <td>{this.state.count}</td>
           <td>{this.state.countPlus}</td>
@@ -155,6 +169,8 @@ export class Bets extends Component {
             </div>
           </td>
           <td>{this.state.number}</td>
+          <td>{this.state.stopLoss}</td>
+          <td>{this.state.time}</td>
           <td style={{color:"green"}}>{this.state.profit}</td>
           <td>{this.state.count}</td>
           <td>{this.state.countPlus}</td>
