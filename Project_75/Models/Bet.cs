@@ -1,7 +1,8 @@
 ﻿namespace Project_75.Models
 {
-    public class BetModel
+    public class Bet
     {
+        public int Id { get; set; }
         public int Number { get; set; }
         public string Symbol { get; set; }
         public bool IsLong { get; set; }
