@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Bets } from "./Bets";
+import { Statistics } from './Statistics';
 import './Symbols.css';
 
 export class Symbols extends Component {
@@ -7,7 +7,7 @@ export class Symbols extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { symbols: [], bets: [], stopLosses: [], selectedBets: [], numbers: [] };
+    this.state = { symbols: [], stopLosses: [] };
     this.click = this.click.bind(this);
     this.add = this.add.bind(this);
   }
@@ -22,24 +22,7 @@ export class Symbols extends Component {
 
   async click(){
     let symbol = document.getElementById("selectSymbol").value;
-    
-    let sl = (Number)(document.getElementById("selectStopLoss").value);
-    if(symbol == "All"){
-      let selectedBets = this.state.bets.filter(bet=>bet.stopLoss === sl);
-      let numbers = selectedBets.map(bet=>bet.number);
-      let dataNumbers = Array.from(new Set(numbers));
-      
-      this.setState({ symbol: symbol, numbers: dataNumbers, selectedBets: selectedBets });
-    }
-    else{
-      let selectedBets = this.state.bets.filter(bet=>bet.symbol === symbol && bet.stopLoss === sl);
-      let numbers = selectedBets.map(bet=>bet.number);
-      let dataNumbers = Array.from(new Set(numbers));
-      
-      this.setState({ symbol: symbol, numbers: dataNumbers, selectedBets: selectedBets });
-    }
-    
-
+    this.setState({ symbol: symbol });
   }
 
   render() {
@@ -65,26 +48,9 @@ export class Symbols extends Component {
                 </option>
               )}
             </select>
-          <table className='table' aria-labelledby="tabelLabel">
-            <thead style={{position:"sticky", top: 0, backgroundColor:"lightgray", zIndex: 9997}}>
-              <tr>
-                <th style={{width: "20%"}}>Symbol</th>
-                <th>Chart</th>
-                <th>Number</th>
-                <th>SL (%)</th>
-                <th>Time (m)</th>
-                <th>Profit (%)</th>
-                <th>Count</th>
-                <th>Count +</th>
-                <th>Count -</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.numbers.map(number =>
-                <Bets key={number+this.state.symbol} bets={this.state.selectedBets.filter(bet=>bet.number === number)} number={number} symbol={this.state.symbol}/>
-              )}
-            </tbody>
-          </table>
+          <div style={{width:"80%"}}>
+            <Statistics key={this.state.symbol} symbol={this.state.symbol}/>
+          </div>
         </div>
         
       </div>
@@ -95,12 +61,10 @@ export class Symbols extends Component {
     const response = await fetch('symbol');
     let data = await response.json();
     data.push({name:"All"});
-    const responseBets = await fetch('bet');
-    const dataBets = await responseBets.json();
 
     const responseSL = await fetch('bet/GetStopLoses');
     const dataStopLoses = await responseSL.json();
 
-    this.setState({ symbols: data , bets: dataBets, stopLosses: dataStopLoses });
+    this.setState({ symbols: data , stopLosses: dataStopLoses });
   }
 }

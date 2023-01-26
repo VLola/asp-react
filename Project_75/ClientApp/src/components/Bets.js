@@ -19,7 +19,7 @@ function newBet(bet, sum){
   }
 }
 
-let Point = ({ x, y, datum }) => {
+let Bet = ({ x, y, datum }) => {
   let [hovered, setHovered] = React.useState(false);
   let [selected, setSelected] = React.useState(false);
 
@@ -126,7 +126,7 @@ export class Bets extends Component {
               <VictoryScatter data={this.state.data}
                   style={{ labels: {  fontSize: "10px" } }}
                   dataComponent={
-                    <Point />
+                    <Bet />
                   }
                     />
               <VictoryAxis dependentAxis/>

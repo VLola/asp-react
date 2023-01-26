@@ -8,6 +8,12 @@
 .div__container span{
     padding: 20px;
 }
+.div__content-center{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
 .tr__bet:hover{
     font-size: 150%;
 }
