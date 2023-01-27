@@ -40,8 +40,8 @@ let Bet = ({ x, y, datum }) => {
         <MyWindowPortal setSelected={setSelected}>
             <Symbol key={datum.openTime} 
             bet={datum}
-            openTime={new Date(datum.openTime).getTime()} 
-            closeTime={new Date(datum.closeTime).getTime()}
+            openTime={datum.openTime} 
+            closeTime={datum.closeTime}
             />
           </MyWindowPortal>
       </circle>

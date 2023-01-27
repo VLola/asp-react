@@ -8,19 +8,21 @@ export class Symbol extends Component {
 
   constructor(props) {
     super(props);
+    let openTime = new Date(props.openTime).getTime();
+    let closeTime = new Date(props.closeTime).getTime();
     this.state = { bet: props.bet
       , symbol: props.bet.symbol
       , klines: []
-      , closeTime: (props.closeTime + (props.bet.interval * 60 * 1000 * 10))
-      , openTime: (props.openTime - (props.bet.interval * 60 * 1000 * 10))
+      , closeTime: (closeTime + (props.bet.interval * 60 * 1000 * 10))
+      , openTime: (openTime - (props.bet.interval * 60 * 1000 * 10))
       , interval: props.bet.interval
       , points: [
         {
-          x: props.openTime
+          x: openTime
           , y: props.bet.openPrice
           , label: `openTime: ${new Date(props.openTime).toLocaleString()}\nopenPrice: ${props.bet.openPrice}`
         },{
-          x: props.closeTime
+          x: closeTime
           , y: props.bet.closePrice
           , label: `closeTime: ${new Date(props.closeTime).toLocaleString()}\nclosePrice: ${props.bet.closePrice}`
         }] 
@@ -43,7 +45,7 @@ export class Symbol extends Component {
       , close: kline[4]
       , high: kline[2]
       , low: kline[3]
-      , label: `open: ${kline[1]}\nclose: ${kline[4]}\nhigh: ${kline[2]}\nlow: ${kline[3]}\n${new Date(kline[0]).toLocaleString()}`};
+      , label: `open: ${kline[1]}\nclose: ${kline[4]}\nhigh: ${kline[2]}\nlow: ${kline[3]}\n${new Date(kline[0]).toLocaleString()}\n${new Date(kline[6]).toLocaleString()}`};
   }
 
   render() {
