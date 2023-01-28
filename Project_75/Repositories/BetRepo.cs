@@ -1,4 +1,5 @@
-﻿using Project_75.HostContexts;
+﻿using Newtonsoft.Json;
+using Project_75.HostContexts;
 using Project_75.Models;
 
 namespace Project_75.Repositories
@@ -12,8 +13,8 @@ namespace Project_75.Repositories
         }
         public Bet Get(int id) => context.Bets.Find(id);
         public IEnumerable<Bet> GetAll() => context.Bets;
-        public IEnumerable<Bet> Find(string symbol) {
-            return context.Bets.Where(bet => bet.Symbol == symbol);
+        public string Find(string symbol) {
+            return JsonConvert.SerializeObject(context.Bets.Where(bet => bet.Symbol == symbol));
         }
 
     }

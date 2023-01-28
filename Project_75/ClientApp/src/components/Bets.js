@@ -23,7 +23,6 @@ let Bet = ({ x, y, datum }) => {
   let [hovered, setHovered] = React.useState(false);
   let [selected, setSelected] = React.useState(false);
 
-  
   if(selected){
     return(
       <circle
@@ -40,8 +39,6 @@ let Bet = ({ x, y, datum }) => {
         <MyWindowPortal setSelected={setSelected}>
             <Symbol key={datum.openTime} 
             bet={datum}
-            openTime={datum.openTime} 
-            closeTime={datum.closeTime}
             />
           </MyWindowPortal>
       </circle>

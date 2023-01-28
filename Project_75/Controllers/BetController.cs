@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Project_75.Models;
 using Project_75.UnitOfWorks;
-using System.Net;
-using System.Text.Json;
 
 namespace Project_75.Controllers
 {
@@ -50,7 +48,7 @@ namespace Project_75.Controllers
             return array;
         }
         [HttpGet("Find")]
-        public IEnumerable<Bet> Find(string symbol)
+        public string Find(string symbol)
         {
             return work.BetRepo.Find(symbol);
         }

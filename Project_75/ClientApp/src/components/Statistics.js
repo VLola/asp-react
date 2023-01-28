@@ -8,11 +8,29 @@ export class Statistics extends Component {
   constructor(props) {
     super(props);
     this.state = { loading: true, symbol: props.symbol, numbers:[], bets:[] };
+    this.newBet = this.newBet.bind(this);
   }
 
   componentDidMount() {
     this.populateStatisticsData();
   }
+
+  newBet(bet){
+    return {
+      number: bet[0]
+      , symbol: bet[1]
+      , isLong: bet[2]
+      , isPositive: bet[3]
+      , openPrice: bet[4]
+      , closePrice: bet[5]
+      , openTime: bet[6]
+      , closeTime: bet[7]
+      , profit: bet[8]
+      , stopLoss: bet[9]
+      , open: bet[10]
+      , close: bet[11]
+      , interval: bet[12]
+  }}
 
   static renderStatisticsTable(numbers, bets, symbol) {
     if(symbol != "" && symbol != null){
@@ -63,8 +81,8 @@ export class Statistics extends Component {
   async populateStatisticsData() {
     if(this.state.symbol != "" && this.state.symbol != null){
         let responseBets = await fetch('bet/Find?symbol='+this.state.symbol);
-        let bets = await responseBets.json();
-
+        let betsJson = await responseBets.json();
+        let bets = betsJson.map(bet=>this.newBet(bet));
         let numbers = bets.map(bet=>bet.number);
         let dataNumbers = Array.from(new Set(numbers));
         

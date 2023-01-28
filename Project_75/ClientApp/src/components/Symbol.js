@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryChart, VictoryCandlestick, VictoryLabel, VictoryAxis, VictoryTooltip, VictoryScatter, VictoryZoomContainer, VictoryTheme } from 'victory';
+import { VictoryChart, VictoryCandlestick, VictoryLabel, VictoryAxis, VictoryTooltip, VictoryScatter, VictoryZoomContainer, VictoryTheme, Data } from 'victory';
 
 
 
@@ -8,23 +8,21 @@ export class Symbol extends Component {
 
   constructor(props) {
     super(props);
-    let openTime = new Date(props.openTime).getTime();
-    let closeTime = new Date(props.closeTime).getTime();
     this.state = { bet: props.bet
       , symbol: props.bet.symbol
       , klines: []
-      , closeTime: (closeTime + (props.bet.interval * 60 * 1000 * 10))
-      , openTime: (openTime - (props.bet.interval * 60 * 1000 * 10))
+      , openTime: props.bet.openTime - (props.bet.interval * 60 * 1000 * 10)
+      , closeTime: props.bet.closeTime + (props.bet.interval * 60 * 1000 * 10)
       , interval: props.bet.interval
       , points: [
         {
-          x: openTime
+          x: props.bet.openTime
           , y: props.bet.openPrice
-          , label: `openTime: ${new Date(props.openTime).toLocaleString()}\nopenPrice: ${props.bet.openPrice}`
+          , label: `openTime: ${new Date(props.bet.openTime).toLocaleString()}\nopenPrice: ${props.bet.openPrice}`
         },{
-          x: closeTime
+          x: props.bet.closeTime
           , y: props.bet.closePrice
-          , label: `closeTime: ${new Date(props.closeTime).toLocaleString()}\nclosePrice: ${props.bet.closePrice}`
+          , label: `closeTime: ${new Date(props.bet.closeTime).toLocaleString()}\nclosePrice: ${props.bet.closePrice}`
         }] 
     };
     this.newKline = this.newKline.bind(this);
