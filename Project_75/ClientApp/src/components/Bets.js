@@ -67,27 +67,30 @@ export class Bets extends Component {
   constructor(props) {
     super(props);
 
-    let profit = Math.round(props.bets.map(bet=>bet.profit).reduce((a, b) => a + b, 0));
-    let count = props.bets.length;
-    let countPlus = props.bets.filter(bet=>bet.profit > 0).length;
-    let countMinus = props.bets.filter(bet=>bet.profit < 0).length;
-    let sum = 0;
-    let data = props.bets.map(bet=>newBet(bet, sum += bet.profit));
-    let x = data[0].openTime;
-    let bet = data[0];
-    data.unshift({
-      x: x
-      , y: 0
-      , symbol: bet.symbol
-      , openTime: bet.openTime
-      , closeTime: bet.closeTime
-      , openPrice: bet.openPrice
-      , closePrice: bet.closePrice
-      , interval: bet.interval
-      , profit: 0
-      , info: "Start"
-    });
-    this.state = { hovered: false, data: data, symbol: props.symbol, bets: props.bets, number: props.number, stopLoss: props.bets[0].stopLoss, time: (props.bets[0].interval * props.bets[0].close), profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
+    // let profit = Math.round(props.bets.map(bet=>bet.profit).reduce((a, b) => a + b, 0));
+    // let count = props.bets.length;
+    // let countPlus = props.bets.filter(bet=>bet.profit > 0).length;
+    // let countMinus = props.bets.filter(bet=>bet.profit < 0).length;
+    // let sum = 0;
+    // let data = props.bets.map(bet=>newBet(bet, sum += bet.profit));
+    // let x = data[0].openTime;
+    // let bet = data[0];
+    // data.unshift({
+    //   x: x
+    //   , y: 0
+    //   , symbol: bet.symbol
+    //   , openTime: bet.openTime
+    //   , closeTime: bet.closeTime
+    //   , openPrice: bet.openPrice
+    //   , closePrice: bet.closePrice
+    //   , interval: bet.interval
+    //   , profit: 0
+    //   , info: "Start"
+    // });
+    // this.state = { hovered: false, data: data, symbol: props.symbol, bets: props.bets, number: props.number, stopLoss: props.bets[0].stopLoss, time: (props.bets[0].interval * props.bets[0].close), profit: profit, count: count, countPlus: countPlus, countMinus: countMinus, isChart: false };
+    
+    
+    this.state = { hovered: false, stat: props.stat, isChart: false };
     this.click = this.click.bind(this);
     this.leave = this.leave.bind(this);
   }
@@ -100,84 +103,121 @@ export class Bets extends Component {
     this.setState({ isChart: false });
   }
 
-  render() {
-    if(this.state.isChart === true){
-      let VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
-      return(
-      <tr className='tr__chart'>
-        <td className='td__chart'>
-          <div className='div-100'>
-            <VictoryChart 
-              theme={VictoryTheme.material} 
-              padding={ {top: 80, bottom: 20} } 
-              width={500}
-              domainPadding={{ y: 50, x: 50 }}
-              containerComponent={
-                <VictoryZoomVoronoiContainer
-                  mouseFollowTooltips
-                  labels={({ datum }) => datum.info}
-                  labelComponent={<VictoryTooltip flyoutPadding={{left: 20, right: 20}} center={{x:0 , y:0}}/>}
-                />
-              }
-            >
-              <VictoryScatter data={this.state.data}
-                  style={{ labels: {  fontSize: "10px" } }}
-                  dataComponent={
-                    <Bet />
-                  }
-                    />
-              <VictoryAxis dependentAxis/>
-            </VictoryChart>
-            <div>
-              <button onClick={this.leave}>Close</button>
-            </div>
-          </div>
-        </td>
-        <td className='td-0'></td>
-      </tr>
+  // render() {
+  //   if(this.state.isChart === true){
+  //     let VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
+  //     return(
+  //     <tr className='tr__chart'>
+  //       <td className='td__chart'>
+  //         <div className='div-100'>
+  //           <VictoryChart 
+  //             theme={VictoryTheme.material} 
+  //             padding={ {top: 80, bottom: 20} } 
+  //             width={500}
+  //             domainPadding={{ y: 50, x: 50 }}
+  //             containerComponent={
+  //               <VictoryZoomVoronoiContainer
+  //                 mouseFollowTooltips
+  //                 labels={({ datum }) => datum.info}
+  //                 labelComponent={<VictoryTooltip flyoutPadding={{left: 20, right: 20}} center={{x:0 , y:0}}/>}
+  //               />
+  //             }
+  //           >
+  //             <VictoryScatter data={this.state.data}
+  //                 style={{ labels: {  fontSize: "10px" } }}
+  //                 dataComponent={
+  //                   <Bet />
+  //                 }
+  //                   />
+  //             <VictoryAxis dependentAxis/>
+  //           </VictoryChart>
+  //           <div>
+  //             <button onClick={this.leave}>Close</button>
+  //           </div>
+  //         </div>
+  //       </td>
+  //       <td className='td-0'></td>
+  //     </tr>
+  //     );
+  //   }
+  //   else{
+  //     if(this.state.profit < 0){
+  //       return (
+  //       <tr className='tr__bet' onClick={this.click}>
+  //         <td>{this.state.symbol}</td>
+  //         <td>
+  //           <div style={{width:"50px",height:"25px"}}>
+  //               {/* <VictoryLine data={this.state.data} style={{ data: { stroke: "#000000", strokeWidth: 15 } }}/> */}
+  //           </div>
+  //         </td>
+  //         <td>{this.state.number}</td>
+  //         <td>{this.state.stopLoss}</td>
+  //         <td>{this.state.time}</td>
+  //         <td style={{color:"red"}}>{this.state.profit}</td>
+  //         <td>{this.state.count}</td>
+  //         <td>{this.state.countPlus}</td>
+  //         <td>{this.state.countMinus}</td>
+  //       </tr>
+  //       );
+  //     }else{
+  //       return (
+  //       <tr className='tr__bet' onClick={this.click}>
+  //         <td>{this.state.symbol}</td>
+  //         <td>
+  //           <div style={{width:"50px",height:"25px"}}>
+  //               {/* <VictoryLine data={this.state.data} style={{ data: { stroke: "#000000", strokeWidth: 15 } }}/> */}
+  //           </div>
+  //         </td>
+  //         <td>{this.state.number}</td>
+  //         <td>{this.state.stopLoss}</td>
+  //         <td>{this.state.time}</td>
+  //         <td style={{color:"green"}}>{this.state.profit}</td>
+  //         <td>{this.state.count}</td>
+  //         <td>{this.state.countPlus}</td>
+  //         <td>{this.state.countMinus}</td>
+  //       </tr>
+  //       );
+  //     }
+  //   }
+    
+    
+  // }
+
+  render(){
+    if(this.state.stat.profit >= 0){
+      return (
+        <tr className='tr__bet' onClick={this.click}>
+          <td>{this.state.stat.name}</td>
+          <td>
+            <img src={"data:image/png;base64,"+this.state.stat.chart}  style={{width:"50px",height:"25px"}}/>
+          </td>
+          <td>{this.state.stat.number}</td>
+          <td>{this.state.stat.stopLoss}</td>
+          <td>{this.state.stat.time}</td>
+          <td style={{color:"green"}}>{this.state.stat.profit}</td>
+          <td>{this.state.stat.count}</td>
+          <td>{this.state.stat.countPlus}</td>
+          <td>{this.state.stat.countMinus}</td>
+        </tr>
       );
     }
     else{
-      if(this.state.profit < 0){
-        return (
+      return (
         <tr className='tr__bet' onClick={this.click}>
-          <td>{this.state.symbol}</td>
+          <td>{this.state.stat.name}</td>
           <td>
-            <div style={{width:"50px",height:"25px"}}>
-                <VictoryLine data={this.state.data} style={{ data: { stroke: "#000000", strokeWidth: 15 } }}/>
-            </div>
+            <img src={"data:image/png;base64,"+this.state.stat.chart}  style={{width:"50px",height:"25px"}}/>
           </td>
-          <td>{this.state.number}</td>
-          <td>{this.state.stopLoss}</td>
-          <td>{this.state.time}</td>
-          <td style={{color:"red"}}>{this.state.profit}</td>
-          <td>{this.state.count}</td>
-          <td>{this.state.countPlus}</td>
-          <td>{this.state.countMinus}</td>
+          <td>{this.state.stat.number}</td>
+          <td>{this.state.stat.stopLoss}</td>
+          <td>{this.state.stat.time}</td>
+          <td style={{color:"red"}}>{this.state.stat.profit}</td>
+          <td>{this.state.stat.count}</td>
+          <td>{this.state.stat.countPlus}</td>
+          <td>{this.state.stat.countMinus}</td>
         </tr>
-        );
-      }else{
-        return (
-        <tr className='tr__bet' onClick={this.click}>
-          <td>{this.state.symbol}</td>
-          <td>
-            <div style={{width:"50px",height:"25px"}}>
-                <VictoryLine data={this.state.data} style={{ data: { stroke: "#000000", strokeWidth: 15 } }}/>
-            </div>
-          </td>
-          <td>{this.state.number}</td>
-          <td>{this.state.stopLoss}</td>
-          <td>{this.state.time}</td>
-          <td style={{color:"green"}}>{this.state.profit}</td>
-          <td>{this.state.count}</td>
-          <td>{this.state.countPlus}</td>
-          <td>{this.state.countMinus}</td>
-        </tr>
-        );
-      }
+      );
     }
-    
-    
   }
 
 }

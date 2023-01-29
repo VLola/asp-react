@@ -7,32 +7,32 @@ export class Statistics extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { loading: true, symbol: props.symbol, numbers:[], bets:[] };
-    this.newBet = this.newBet.bind(this);
+    this.state = { loading: true, symbol: props.symbol, statistics:[] };
+    // this.newBet = this.newBet.bind(this);
   }
 
   componentDidMount() {
     this.populateStatisticsData();
   }
 
-  newBet(bet){
-    return {
-      number: bet[0]
-      , symbol: bet[1]
-      , isLong: bet[2]
-      , isPositive: bet[3]
-      , openPrice: bet[4]
-      , closePrice: bet[5]
-      , openTime: bet[6]
-      , closeTime: bet[7]
-      , profit: bet[8]
-      , stopLoss: bet[9]
-      , open: bet[10]
-      , close: bet[11]
-      , interval: bet[12]
-  }}
+  // newBet(bet){
+  //   return {
+  //     number: bet[0]
+  //     , symbol: bet[1]
+  //     , isLong: bet[2]
+  //     , isPositive: bet[3]
+  //     , openPrice: bet[4]
+  //     , closePrice: bet[5]
+  //     , openTime: bet[6]
+  //     , closeTime: bet[7]
+  //     , profit: bet[8]
+  //     , stopLoss: bet[9]
+  //     , open: bet[10]
+  //     , close: bet[11]
+  //     , interval: bet[12]
+  // }}
 
-  static renderStatisticsTable(numbers, bets, symbol) {
+  static renderStatisticsTable(statistics, symbol) {
     if(symbol != "" && symbol != null){
         return (
             <table className='table' aria-labelledby="tabelLabel">
@@ -50,8 +50,8 @@ export class Statistics extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {numbers.map(number =>
-                        <Bets key={number+symbol} bets={bets.filter(bet=>bet.number === number)} number={number} symbol={symbol}/>
+                    {statistics.map(stat =>
+                        <Bets key={stat.number+symbol} stat={stat}/>
                     )}
                 </tbody>
             </table>
@@ -69,7 +69,7 @@ export class Statistics extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : Statistics.renderStatisticsTable(this.state.numbers, this.state.bets, this.state.symbol);
+      : Statistics.renderStatisticsTable(this.state.statistics, this.state.symbol);
 
     return (
       <div>
@@ -80,13 +80,10 @@ export class Statistics extends Component {
 
   async populateStatisticsData() {
     if(this.state.symbol != "" && this.state.symbol != null){
-        let responseBets = await fetch('bet/Find?symbol='+this.state.symbol);
-        let betsJson = await responseBets.json();
-        let bets = betsJson.map(bet=>this.newBet(bet));
-        let numbers = bets.map(bet=>bet.number);
-        let dataNumbers = Array.from(new Set(numbers));
+        let responseStatistics = await fetch('symbol/Find?name='+this.state.symbol);
+        let statistics = await responseStatistics.json();
         
-        this.setState({ numbers: dataNumbers, bets: bets, loading: false });
+        this.setState({ statistics: statistics, loading: false });
     }
     else{
         this.setState({ loading: false });
