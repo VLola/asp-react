@@ -40,13 +40,12 @@ export class Statistics extends Component {
                     <tr>
                         <th style={{width: "20%"}}>Symbol</th>
                         <th>Chart</th>
+                        <th>Profit (%)</th>
+                        <th>Win (%)</th>
                         <th>Number</th>
                         <th>SL (%)</th>
                         <th>Time (m)</th>
-                        <th>Profit (%)</th>
                         <th>Count</th>
-                        <th>Count +</th>
-                        <th>Count -</th>
                     </tr>
                 </thead>
                 <tbody>

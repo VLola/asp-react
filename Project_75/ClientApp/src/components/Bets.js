@@ -191,13 +191,12 @@ export class Bets extends Component {
           <td>
             <img src={"data:image/png;base64,"+this.state.stat.chart}  style={{width:"50px",height:"25px"}}/>
           </td>
+          <td style={{color:"green"}}>{this.state.stat.profit}</td>
+          <td>{this.state.stat.win}</td>
           <td>{this.state.stat.number}</td>
           <td>{this.state.stat.stopLoss}</td>
           <td>{this.state.stat.time}</td>
-          <td style={{color:"green"}}>{this.state.stat.profit}</td>
-          <td>{this.state.stat.count}</td>
-          <td>{this.state.stat.countPlus}</td>
-          <td>{this.state.stat.countMinus}</td>
+          <td>{this.state.stat.count+" (+"+this.state.stat.countPlus+"/-"+this.state.stat.countMinus+")"}</td>
         </tr>
       );
     }
@@ -208,13 +207,12 @@ export class Bets extends Component {
           <td>
             <img src={"data:image/png;base64,"+this.state.stat.chart}  style={{width:"50px",height:"25px"}}/>
           </td>
+          <td style={{color:"red"}}>{this.state.stat.profit}</td>
+          <td>{this.state.stat.win}</td>
           <td>{this.state.stat.number}</td>
           <td>{this.state.stat.stopLoss}</td>
           <td>{this.state.stat.time}</td>
-          <td style={{color:"red"}}>{this.state.stat.profit}</td>
-          <td>{this.state.stat.count}</td>
-          <td>{this.state.stat.countPlus}</td>
-          <td>{this.state.stat.countMinus}</td>
+          <td>{this.state.stat.count+" (+"+this.state.stat.countPlus+"/-"+this.state.stat.countMinus+")"}</td>
         </tr>
       );
     }
