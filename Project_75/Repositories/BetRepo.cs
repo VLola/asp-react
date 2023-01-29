@@ -6,8 +6,8 @@ namespace Project_75.Repositories
 {
     public class BetRepo : IRepo<Bet>
     {
-        public HostContext context;
-        public BetRepo(HostContext context)
+        public BetContext context;
+        public BetRepo(BetContext context)
         {
             this.context = context;
         }

@@ -5,7 +5,7 @@ namespace Project_75.UnitOfWorks
 {
     public class BetWork
     {
-        private HostContext _context = new HostContext();
+        private BetContext _context = new BetContext();
 
         private BetRepo? _betRepo;
 
