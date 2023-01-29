@@ -13,8 +13,8 @@ namespace Project_75.Repositories
         }
         public Bet Get(int id) => context.Bets.Find(id);
         public IEnumerable<Bet> GetAll() => context.Bets;
-        public string Find(string symbol) {
-            return JsonConvert.SerializeObject(context.Bets.Where(bet => bet.Symbol == symbol));
+        public string Find(string name, int number) {
+            return JsonConvert.SerializeObject(context.Bets.Where(bet => bet.Symbol == name && bet.Number == number));
         }
 
     }

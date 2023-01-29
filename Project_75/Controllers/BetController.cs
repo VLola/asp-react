@@ -21,9 +21,9 @@ namespace Project_75.Controllers
             return array;
         }
         [HttpGet("Find")]
-        public string Find(string symbol)
+        public string Find(string name, int number)
         {
-            return work.BetRepo.Find(symbol);
+            return work.BetRepo.Find(name, number);
         }
     }
 }
