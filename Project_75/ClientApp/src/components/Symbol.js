@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryChart, VictoryCandlestick, VictoryLabel, VictoryAxis, VictoryTooltip, VictoryScatter, VictoryZoomContainer, VictoryTheme, Data } from 'victory';
+import { VictoryChart, VictoryCandlestick, VictoryLabel, VictoryAxis, VictoryTooltip, VictoryScatter, VictoryTheme } from 'victory';
 
 
 
