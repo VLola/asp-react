@@ -14,8 +14,15 @@
     justify-content: center;
     align-items: center;
 }
+.tr__bet{
+    cursor: pointer;
+}
 .tr__bet:hover{
-    font-size: 150%;
+    text-shadow: gray 1px 0 10px;
+    box-shadow:
+       inset 0 -3em 3em rgba(0,0,0,0.1),
+             0 0  0 0px rgb(255,255,255),
+             0.3em 0.3em 1em rgba(0,0,0,0.3);
 }
 .tr__chart{
     position: fixed;

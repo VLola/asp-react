@@ -8,29 +8,11 @@ export class Statistics extends Component {
   constructor(props) {
     super(props);
     this.state = { loading: true, symbol: props.symbol, statistics:[] };
-    // this.newBet = this.newBet.bind(this);
   }
 
   componentDidMount() {
     this.populateStatisticsData();
   }
-
-  // newBet(bet){
-  //   return {
-  //     number: bet[0]
-  //     , symbol: bet[1]
-  //     , isLong: bet[2]
-  //     , isPositive: bet[3]
-  //     , openPrice: bet[4]
-  //     , closePrice: bet[5]
-  //     , openTime: bet[6]
-  //     , closeTime: bet[7]
-  //     , profit: bet[8]
-  //     , stopLoss: bet[9]
-  //     , open: bet[10]
-  //     , close: bet[11]
-  //     , interval: bet[12]
-  // }}
 
   static renderStatisticsTable(statistics, symbol) {
     if(symbol != "" && symbol != null){
@@ -67,7 +49,7 @@ export class Statistics extends Component {
 
   render() {
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <div className='div__content-center'><h3>Loading...</h3></div>
       : Statistics.renderStatisticsTable(this.state.statistics, this.state.symbol);
 
     return (
