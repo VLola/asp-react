@@ -23,7 +23,8 @@ export class Statistics extends Component {
                         <th style={{width: "20%"}}>Symbol</th>
                         <th>Chart</th>
                         <th>Profit (%)</th>
-                        <th>Win (%)</th>
+                        <th>Win (+/-)</th>
+                        <th>Average</th>
                         <th>Number</th>
                         <th>SL (%)</th>
                         <th>Time (m)</th>

@@ -27,32 +27,17 @@ export class Symbols extends Component {
 
   render() {
     return (
-      <div>
-        <div className='div__flex'>
-          <div className='div__container'>
-            <span>StopLoss:</span>
-            <select id='selectStopLoss'>
-              {this.state.stopLosses.map(sl =>
-                <option key={sl} value={sl}>
-                  {sl}
-                </option>
-              )}
-            </select>
-          </div>
+      <div className='div__flex'>
+          <select id='selectSymbol' multiple onChange={this.click}>
+            {this.state.symbols.map(symbol =>
+              <option key={symbol.name} value={symbol.name}>
+                {symbol.name}
+              </option>
+            )}
+          </select>
+        <div style={{width:"80%"}}>
+          <Statistics key={this.state.symbol} symbol={this.state.symbol}/>
         </div>
-        <div className='div__flex'>
-            <select id='selectSymbol' multiple onChange={this.click}>
-              {this.state.symbols.map(symbol =>
-                <option key={symbol.name} value={symbol.name}>
-                  {symbol.name}
-                </option>
-              )}
-            </select>
-          <div style={{width:"80%"}}>
-            <Statistics key={this.state.symbol} symbol={this.state.symbol}/>
-          </div>
-        </div>
-        
       </div>
     );
   }

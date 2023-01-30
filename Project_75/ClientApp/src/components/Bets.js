@@ -149,6 +149,7 @@ export class Bets extends Component {
             </td>
             <td style={{color:"green"}}>{this.state.stat.profit}</td>
             <td>{this.state.stat.win}</td>
+            <td>{Math.round(this.state.stat.profit / this.state.stat.count * 100) / 100}</td>
             <td>{this.state.stat.number}</td>
             <td>{this.state.stat.stopLoss}</td>
             <td>{this.state.stat.time}</td>
@@ -165,6 +166,7 @@ export class Bets extends Component {
             </td>
             <td style={{color:"red"}}>{this.state.stat.profit}</td>
             <td>{this.state.stat.win}</td>
+            <td>{Math.round(this.state.stat.profit / this.state.stat.count * 100) / 100}</td>
             <td>{this.state.stat.number}</td>
             <td>{this.state.stat.stopLoss}</td>
             <td>{this.state.stat.time}</td>
