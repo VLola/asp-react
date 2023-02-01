@@ -15,7 +15,7 @@ export class Statistics extends Component {
   }
 
   static renderStatisticsTable(statistics, symbol) {
-    if(symbol !== "" && symbol !== null){
+    if(symbol !== "" && symbol !== null && symbol !== undefined){
         return (
             <table className='table' aria-labelledby="tabelLabel">
                 <thead style={{position:"sticky", top: 0, backgroundColor:"lightgray", zIndex: 9997}}>
@@ -61,8 +61,8 @@ export class Statistics extends Component {
   }
 
   async populateStatisticsData() {
-    if(this.state.symbol !== "" && this.state.symbol !== null){
-        let responseStatistics = await fetch('symbol/Find?name='+this.state.symbol);
+    if(this.state.symbol !== "" && this.state.symbol !== null && this.state.symbol !== undefined){
+        let responseStatistics = await fetch('symbol/Get?name='+this.state.symbol);
         let statistics = await responseStatistics.json();
         
         this.setState({ statistics: statistics, loading: false });

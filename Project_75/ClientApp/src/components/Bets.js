@@ -87,7 +87,7 @@ export class Bets extends Component {
 
   async click(){
     if(this.state.data == null){
-      let responseBets = await fetch('bet/Find?name='+this.state.stat.name+'&number='+this.state.stat.number);
+      let responseBets = await fetch('bet/Get?name='+this.state.stat.name+'&number='+this.state.stat.number);
       let bets = await responseBets.json();
       let sum = 0;
       let data = bets.map(bet=>newBet(bet, sum += bet[8]));

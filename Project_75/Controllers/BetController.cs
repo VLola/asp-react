@@ -14,13 +14,13 @@ namespace Project_75.Controllers
             double[] array = { 0.5, 1, 1.5, 2 };
             return array;
         }
-        [HttpGet("Find")]
-        public string? Find(string name, int number)
+        [HttpGet("Get")]
+        public string? Get(string name, int number)
         {
             if (!String.IsNullOrEmpty(name))
             {
                 BetWork work = new BetWork(name);
-                return work.BetRepo.Find(number);
+                return work.BetRepo.Get(number);
             }
             else return null;
         }

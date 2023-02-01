@@ -19,13 +19,13 @@ namespace Project_75.Controllers
             List<SymbolBase>? symbols = JsonSerializer.Deserialize<List<SymbolBase>>(json);
             return symbols;
         }
-        [HttpGet("Find")]
-        public IEnumerable<Symbol>? Find(string name)
+        [HttpGet("Get")]
+        public IEnumerable<Symbol>? Get(string name)
         {
             if (!String.IsNullOrEmpty(name) && name != "undefined")
             {
                 SymbolWork work = new SymbolWork(name);
-                return work.SymbolRepo.Find();
+                return work.SymbolRepo.Get();
             }
             else return null;
         }
