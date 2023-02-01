@@ -12,11 +12,6 @@ namespace Project_75.Controllers
     {
         string pathFiles = Directory.GetCurrentDirectory() + "/Files/";
 
-        SymbolWork work;
-        public SymbolController()
-        {
-            work = new SymbolWork();
-        }
         [HttpGet]
         public IEnumerable<SymbolBase>? Get()
         {
@@ -25,9 +20,14 @@ namespace Project_75.Controllers
             return symbols;
         }
         [HttpGet("Find")]
-        public IEnumerable<Symbol> Find(string name)
+        public IEnumerable<Symbol>? Find(string name)
         {
-            return work.SymbolRepo.Find(name);
+            if (!String.IsNullOrEmpty(name) && name != "undefined")
+            {
+                SymbolWork work = new SymbolWork(name);
+                return work.SymbolRepo.Find();
+            }
+            else return null;
         }
     }
 }

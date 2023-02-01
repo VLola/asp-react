@@ -5,9 +5,13 @@ namespace Project_75.UnitOfWorks
 {
     public class SymbolWork
     {
-        private SymbolContext _context = new SymbolContext();
+        private SymbolContext _context;
 
         private SymbolRepo? _symbolRepo;
+        public SymbolWork(string name)
+        {
+            _context = new SymbolContext(name);
+        }
 
         public SymbolRepo SymbolRepo
         {

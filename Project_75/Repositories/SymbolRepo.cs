@@ -12,9 +12,9 @@ namespace Project_75.Repositories
         }
         public Symbol Get(int id) => context.Symbols.Find(id);
         public IEnumerable<Symbol> GetAll() => context.Symbols;
-        public IEnumerable<Symbol> Find(string name)
+        public IEnumerable<Symbol> Find()
         {
-            return context.Symbols.Where(symbol => symbol.Name == name && symbol.Profit > 0m).OrderByDescending(symbol => symbol.Profit);
+            return context.Symbols.Where(symbol => symbol.Profit > 0m).OrderByDescending(symbol => symbol.Profit);
         }
     }
 }

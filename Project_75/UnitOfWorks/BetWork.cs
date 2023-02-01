@@ -5,9 +5,13 @@ namespace Project_75.UnitOfWorks
 {
     public class BetWork
     {
-        private BetContext _context = new BetContext();
+        private BetContext _context;
 
         private BetRepo? _betRepo;
+        public BetWork(string name)
+        {
+            _context = new BetContext(name);
+        }
 
         public BetRepo BetRepo
         {

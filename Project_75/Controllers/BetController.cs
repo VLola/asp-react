@@ -8,12 +8,6 @@ namespace Project_75.Controllers
     [Route("[controller]")]
     public class BetController : Controller
     {
-        BetWork work;
-
-        public BetController()
-        {
-            work = new BetWork();
-        }
         [HttpGet("GetStopLoses")]
         public IEnumerable<double> GetStopLoses()
         {
@@ -21,9 +15,14 @@ namespace Project_75.Controllers
             return array;
         }
         [HttpGet("Find")]
-        public string Find(string name, int number)
+        public string? Find(string name, int number)
         {
-            return work.BetRepo.Find(name, number);
+            if (!String.IsNullOrEmpty(name))
+            {
+                BetWork work = new BetWork(name);
+                return work.BetRepo.Find(number);
+            }
+            else return null;
         }
     }
 }
