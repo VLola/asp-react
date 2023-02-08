@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int Number { get; set; }
+        public int Algorithm { get; set; }
         public decimal StopLoss { get; set; }
         public int Time { get; set; }
         public int Interval { get; set; }

@@ -152,7 +152,9 @@ export class Bets extends Component {
             <td>{Math.round(this.state.stat.profit / this.state.stat.count * 100) / 100}</td>
             <td>{this.state.stat.number}</td>
             <td>{this.state.stat.stopLoss}</td>
+            <td>{this.state.stat.interval}</td>
             <td>{this.state.stat.time}</td>
+            <td>{this.state.stat.algorithm}</td>
             <td>{this.state.stat.count+" (+"+this.state.stat.countPlus+"/-"+this.state.stat.countMinus+")"}</td>
           </tr>
         );

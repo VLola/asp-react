@@ -20,14 +20,16 @@ export class Statistics extends Component {
             <table className='table' aria-labelledby="tabelLabel">
                 <thead style={{position:"sticky", top: 0, backgroundColor:"lightgray", zIndex: 9997}}>
                     <tr>
-                        <th style={{width: "20%"}}>Symbol</th>
+                        <th style={{width: "15%"}}>Symbol</th>
                         <th>Chart</th>
                         <th>Profit (%)</th>
                         <th>Win (+/-)</th>
                         <th>Average</th>
                         <th>Number</th>
                         <th>SL (%)</th>
+                        <th>Kline (m)</th>
                         <th>Time (m)</th>
+                        <th>Algo</th>
                         <th>Count</th>
                     </tr>
                 </thead>
