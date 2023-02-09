@@ -140,10 +140,17 @@ export class Bets extends Component {
       );
     }
     else {
+      let color = "black";
+      if((Math.round(this.state.stat.profit / this.state.stat.count * 100) / 100) * 2 >= this.state.stat.stopLoss
+      && this.state.stat.countPlus / this.state.stat.countMinus > 0.7
+      && this.state.stat.countPlus > 3){
+        color = "orange";
+      }
+
       if(this.state.stat.profit >= 0){
         return (
           <tr className='tr__bet' onClick={this.click}>
-            <td>{this.state.stat.name}</td>
+            <td style={{color: color}}>{this.state.stat.name}</td>
             <td>
               <img src={"data:image/png;base64,"+this.state.stat.chart}  style={{width:"50px",height:"25px"}}/>
             </td>
@@ -162,7 +169,7 @@ export class Bets extends Component {
       else{
         return (
           <tr className='tr__bet' onClick={this.click}>
-            <td>{this.state.stat.name}</td>
+          <td style={{color: color}}>{this.state.stat.name}</td>
             <td>
               <img src={"data:image/png;base64,"+this.state.stat.chart}  style={{width:"50px",height:"25px"}}/>
             </td>
