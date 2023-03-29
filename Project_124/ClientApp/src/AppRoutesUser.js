@@ -1,9 +1,8 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
-import { Authentication } from "./components/Authentication";
 
-let AppRoutes = [
+let AppRoutesUser = [
   {
     index: true,
     element: <Home />
@@ -15,11 +14,7 @@ let AppRoutes = [
   {
     path: '/fetch-data',
     element: <FetchData />
-  },
-  {
-    path: '/authentication-data',
-    element: <Authentication />
   }
 ];
 
-export default AppRoutes;
+export default AppRoutesUser;
