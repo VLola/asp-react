@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-export class Text extends Component {
-  static displayName = Text.name;
+export class Image extends Component {
+  static displayName = Image.name;
 
   constructor(props) {
     super(props);
@@ -42,24 +42,26 @@ export class Text extends Component {
   render() {
     if(this.state.access === "0"){
         return (
-            <div>
-                <div className="form-outline form-white mb-4">
-                    <textarea type="text" className="form-control form-control-lg" placeholder="Text" value={this.state.text} onChange={this.changeText}/>
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+                <div className='d-flex m-5'>
+                    <input type="file" className="btn btn-outline-secondary btn-lg"/>
+                    <label className="custom-file-label"></label>
                 </div>
-                <div className='d-flex justify-content-end align-items-center'>
+                <div className='d-flex align-items-center'>
                     <h4 className='m-3 text-muted'>Limit: {50 - this.state.count}</h4>
-                    <button className="btn btn-outline-secondary btn-lg" onClick={this.click}>Send</button>
+                    <button className="btn btn-outline-secondary btn-lg px-5" onClick={this.click}>Send</button>
                 </div>
             </div>
         );
     }
     else{
         return (
-            <div>
-                <div className="form-outline form-white mb-4">
-                    <textarea type="text" className="form-control form-control-lg" placeholder="Text" value={this.state.text} onChange={this.changeText}/>
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+                <div className='d-flex m-5'>
+                    <input type="file" className="btn btn-outline-secondary btn-lg"/>
+                    <label className="custom-file-label"></label>
                 </div>
-                <div className='d-flex justify-content-end'>
+                <div className='d-flex align-items-center'>
                     <button className="btn btn-outline-secondary btn-lg px-5" onClick={this.click}>Send</button>
                 </div>
             </div>
@@ -76,6 +78,5 @@ export class Text extends Component {
     let response = await fetch('user/GetCountMessages', data);
     let count = await response.text();
     this.setState({ count: count });
-    // console.log(count);
   }
 }

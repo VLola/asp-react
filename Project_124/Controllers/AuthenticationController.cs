@@ -30,8 +30,9 @@ namespace Project_124.Controllers
                 // Claims
                 List<Claim> claims = new();
                 claims.Add(new Claim(ClaimTypes.Email, user.Email));
-                claims.Add(new Claim(ClaimTypes.Role, "User"));
+                claims.Add(new Claim(ClaimTypes.Role, user.Role));
                 claims.Add(new Claim(ClaimTypes.PrimarySid, user.Id.ToString()));
+                claims.Add(new Claim(ClaimTypes.Sid, user.Access.ToString()));
 
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -43,7 +44,7 @@ namespace Project_124.Controllers
                     signingCredentials: signinCredentials
                 );
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new JWTTokenResponse { Id = user.Id, Token = tokenString });
+                return Ok(new JWTTokenResponse { Role = user.Role, Access = user.Access, Token = tokenString });
             }
             return Unauthorized();
         }

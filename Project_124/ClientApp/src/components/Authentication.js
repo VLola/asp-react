@@ -32,6 +32,8 @@ export class Authentication extends Component {
     let result = await response.json();
     if(response.status === 200){
       sessionStorage.setItem("accessToken", result.token);
+      sessionStorage.setItem("role", result.role);
+      sessionStorage.setItem("access", result.access);
       sessionStorage.setItem("isLogin", "true");
       this.setState({email: "", password: "", confirmPassword: ""});
       window.location.href = "";

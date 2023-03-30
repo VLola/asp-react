@@ -1,8 +1,7 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { Authentication } from "./components/Authentication";
 import { Text } from "./components/Text";
+import { Image } from "./components/Image";
 import { History } from "./components/History";
 
 let AppRoutes;
@@ -15,16 +14,12 @@ if(isLogin == "true"){
     element: <Home />
   },
   {
-    path: '/counter',
-    element: <Counter />
-  },
-  {
-    path: '/fetch-data',
-    element: <FetchData />
-  },
-  {
     path: '/text',
     element: <Text />
+  },
+  {
+    path: '/image',
+    element: <Image />
   },
   {
     path: '/history',
@@ -37,14 +32,6 @@ else{
     {
       index: true,
       element: <Home />
-    },
-    {
-      path: '/counter',
-      element: <Counter />
-    },
-    {
-      path: '/fetch-data',
-      element: <FetchData />
     },
     {
       path: '/auth',

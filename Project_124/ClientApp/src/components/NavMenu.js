@@ -29,6 +29,9 @@ export class NavMenu extends Component {
   
 
   render() {
+    let isHistory = false;
+    let access = sessionStorage.getItem("access");
+    if(access === "2" || access === "3") isHistory = true;
     let isLogin = sessionStorage.getItem("isLogin");
     if(isLogin == "true"){
       return (
@@ -42,17 +45,15 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                </NavItem>
-                <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/text">Text</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/history">History</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/image">Image</NavLink>
                 </NavItem>
+                {isHistory? (
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/history">History</NavLink>
+                </NavItem>):(<div></div>)}
                 <button className="btn btn-link" onClick={this.click}>Exit</button>
               </ul>
             </Collapse>
