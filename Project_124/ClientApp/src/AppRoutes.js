@@ -7,8 +7,8 @@ import { History } from "./components/History";
 
 let AppRoutes;
 
-let isLogin = sessionStorage.getItem("isLogin")
-if(isLogin == null || isLogin == false){
+let isLogin = sessionStorage.getItem("isLogin");
+if(isLogin == "true"){
   AppRoutes = [
   {
     index: true,
@@ -23,8 +23,12 @@ if(isLogin == null || isLogin == false){
     element: <FetchData />
   },
   {
-    path: '/auth',
-    element: <Authentication />
+    path: '/text',
+    element: <Text />
+  },
+  {
+    path: '/history',
+    element: <History />
   }
 ];
 }
@@ -43,12 +47,8 @@ else{
       element: <FetchData />
     },
     {
-      path: '/text',
-      element: <Text />
-    },
-    {
-      path: '/history',
-      element: <History />
+      path: '/auth',
+      element: <Authentication />
     }
   ]
 }

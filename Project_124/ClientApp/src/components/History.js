@@ -50,14 +50,13 @@ export class History extends Component {
 
   async populateData() {
     let token = sessionStorage.getItem("accessToken");
-    let userId = sessionStorage.getItem("userId");
     let data = {
         method: 'GET',
         headers: {
             "Accept": "application/json",
             "Authorization": "Bearer " + token
         }};
-    const response = await fetch('user/GetMessages?id=' + userId, data);
+    const response = await fetch('user/GetMessages', data);
     const messages = await response.json();
     this.setState({ messages: messages, loading: false });
   }

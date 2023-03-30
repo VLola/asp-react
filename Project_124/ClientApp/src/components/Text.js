@@ -13,20 +13,20 @@ export class Text extends Component {
 
   async click(){
     let token = sessionStorage.getItem("accessToken");
-    let userId = sessionStorage.getItem("userId");
     let data = {
         method: 'GET',
         headers: {
             "Accept": "application/json",
             "Authorization": "Bearer " + token
         }};
-      let response = await fetch('user/SendText?text=' + this.state.text + "&id=" + userId, data);
+      let response = await fetch('user/SendText?text=' + this.state.text, data);
       let result = await response.text();
-      if(response.status == 200){
+      if(response.status === 200){
         alert(result);
       }
       console.log(result);
   }
+
 
   
   changeText(event) {

@@ -30,10 +30,9 @@ export class Authentication extends Component {
       };
     let response = await fetch('authentication/login', data);
     let result = await response.json();
-    if(response.status == 200){
-      sessionStorage.setItem("userId", result.id);
+    if(response.status === 200){
       sessionStorage.setItem("accessToken", result.token);
-      sessionStorage.setItem("isLogin", true);
+      sessionStorage.setItem("isLogin", "true");
       this.setState({email: "", password: "", confirmPassword: ""});
       window.location.href = "";
     }
