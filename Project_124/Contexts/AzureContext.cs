@@ -6,6 +6,7 @@ namespace Project_124.Contexts
     public class AzureContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Message> Messages { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(new ConfigurationBuilder()

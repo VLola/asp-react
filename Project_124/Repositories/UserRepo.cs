@@ -22,17 +22,32 @@ namespace Project_124.Repositories
             context.Users.Add(user);
             return await context.SaveChangesAsync();
         }
-        public async Task<bool> CheckUser(DataUser dataUser)
+        public async Task<User?> CheckUser(DataUser dataUser)
         {
             User? user = await context.Users.FirstOrDefaultAsync(item => item.Email == dataUser.Email && item.Password == dataUser.Password);
-            if (user != null) return true;
-            else return false;
+            if (user != null) return user;
+            else return null;
         }
         public async Task<bool> CheckEmail(DataUser dataUser)
         {
             User? user = await context.Users.FirstOrDefaultAsync(item => item.Email == dataUser.Email);
             if (user != null) return true;
             else return false;
+        }
+        public async Task<List<Message>> GetMessages(int id)
+        {
+            return await context.Messages.Where(message=>message.UserId == id).ToListAsync();
+        }
+        public async Task AddMessage(Message message)
+        {
+            await context.Messages.AddAsync(message);
+            await context.SaveChangesAsync();
+        }
+        public async Task<int> GetCountMessages(int id)
+        {
+            DateTime startTime = DateTime.Today;
+            DateTime endTime = startTime.AddDays(1);
+            return await context.Messages.Where(message => message.UserId == id && message.DateTime > startTime && message.DateTime < endTime).CountAsync();
         }
     }
 }

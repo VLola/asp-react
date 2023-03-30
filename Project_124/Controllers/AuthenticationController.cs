@@ -18,14 +18,14 @@ namespace Project_124.Controllers
             work = new UserWork();
         }
         [HttpPost("login")]
-        public async Task<ActionResult> Login(DataUser user)
+        public async Task<ActionResult> Login(DataUser dataUser)
         {
-            if (!TryValidateModel(user, nameof(DataUser)))
+            if (!TryValidateModel(dataUser, nameof(DataUser)))
                 return BadRequest();
             ModelState.ClearValidationState(nameof(DataUser));
-            if (user is null)
-                return BadRequest("Invalid user request!!!");
-            if (await work.UserRepo.CheckUser(user))
+            if (dataUser is null) return BadRequest("Invalid user request!!!");
+            User? user = await work.UserRepo.CheckUser(dataUser);
+            if (user != null)
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -37,7 +37,7 @@ namespace Project_124.Controllers
                     signingCredentials: signinCredentials
                 );
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new JWTTokenResponse { Token = tokenString });
+                return Ok(new JWTTokenResponse { Id = user.Id, Token = tokenString });
             }
             return Unauthorized();
         }
@@ -45,8 +45,7 @@ namespace Project_124.Controllers
         [HttpPost("registration")]
         public async Task<ActionResult> Add(DataUser dataUser)
         {
-            if (!TryValidateModel(dataUser, nameof(DataUser)))
-                return BadRequest();
+            if (!TryValidateModel(dataUser, nameof(DataUser))) return BadRequest();
             ModelState.ClearValidationState(nameof(DataUser));
             var addr = new System.Net.Mail.MailAddress(dataUser.Email);
             if (addr.Address == dataUser.Email)
