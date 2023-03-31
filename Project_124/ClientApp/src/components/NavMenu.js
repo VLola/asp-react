@@ -118,21 +118,6 @@ export class NavMenu extends Component {
   }
 
   render() {
-    let isHistory = false;
-    let isLogin = false;
-    let isAdmin = false;
-    let isUser = false;
-
-    let access = sessionStorage.getItem("access");
-    if(access === "2" || access === "3") isHistory = true;
-
-    let login = sessionStorage.getItem("isLogin");
-    if(login === "true") isLogin = true;
-    
-    let role = sessionStorage.getItem("role");
-    if(role === "Admin") isAdmin = true;
-    if(role === "User") isUser = true;
-
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>

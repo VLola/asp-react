@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 export class History extends Component {
   static displayName = History.name;
@@ -15,24 +16,24 @@ export class History extends Component {
 
   static renderTable(messages) {
     return (
-        <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Question</th>
-            <th>Response</th>
-          </tr>
-        </thead>
-        <tbody>
+        <Table className='table table-striped'>
+        <Thead>
+          <Tr>
+            <Th>Date</Th>
+            <Th>Question</Th>
+            <Th>Response</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {messages.map(item =>
-            <tr key={item.id}>
-              <td>{item.dateTime}</td>
-              <td>{item.question}</td>
-              <td>{item.response}</td>
-            </tr>
+            <Tr key={item.id}>
+              <Td>{item.dateTime}</Td>
+              <Td>{item.question}</Td>
+              <Td>{item.response}</Td>
+            </Tr>
           )}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
     );
   }
   

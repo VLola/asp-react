@@ -12,10 +12,10 @@ namespace Project_124.Controllers
     [ApiController]
     public class AuthenticationController : Controller
     {
-        UserWork work;
+        AuthenticationWork work;
         public AuthenticationController()
         {
-            work = new UserWork();
+            work = new AuthenticationWork();
         }
         [HttpPost("login")]
         public async Task<ActionResult> Login(DataUser dataUser)
@@ -24,7 +24,7 @@ namespace Project_124.Controllers
                 return BadRequest();
             ModelState.ClearValidationState(nameof(DataUser));
             if (dataUser is null) return BadRequest("Invalid user request!!!");
-            User? user = await work.UserRepo.CheckUser(dataUser);
+            User? user = await work.Repository.CheckUser(dataUser);
             if (user != null)
             {
                 // Claims
@@ -57,10 +57,10 @@ namespace Project_124.Controllers
             var addr = new System.Net.Mail.MailAddress(dataUser.Email);
             if (addr.Address == dataUser.Email)
             {
-                if (await work.UserRepo.CheckEmail(dataUser)) return Conflict();
+                if (await work.Repository.CheckEmail(dataUser)) return Conflict();
                 else
                 {
-                    int id = await work.UserRepo.Add(dataUser);
+                    int id = await work.Repository.Add(dataUser);
                     string uri = $"/registration/{id}";
                     return Created(uri, dataUser);
                 }

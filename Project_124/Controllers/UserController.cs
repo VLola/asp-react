@@ -30,7 +30,7 @@ namespace Project_124.Controllers
             {
                 int id = Int32.Parse(claimId.Value);
                 int access = Int32.Parse(claimAccess.Value);
-                int count = await work.UserRepo.GetCountMessages(id);
+                int count = await work.Repository.GetCountMessages(id);
 
                 if (access == 0 && count > 50)  return BadRequest("Message limit reached");
 
@@ -44,7 +44,7 @@ namespace Project_124.Controllers
                     message.Response = result;
                     message.DateTime = DateTime.UtcNow;
                     message.UserId = id;
-                    await work.UserRepo.AddMessage(message);
+                    await work.Repository.AddMessage(message);
 
                     return Ok("Ok");
                 }
@@ -65,13 +65,13 @@ namespace Project_124.Controllers
             {
                 int id = Int32.Parse(claimId.Value);
                 int access = Int32.Parse(claimAccess.Value);
-                int count = await work.UserRepo.GetCountMessages(id);
+                int count = await work.Repository.GetCountMessages(id);
 
                 if (access == 0 && count > 50) return BadRequest("Message limit reached");
 
                 // Save Image
 
-                string path = work.UserRepo.AddFile(file);
+                string path = work.Repository.AddFile(file);
 
                 // Load Image
 
@@ -120,7 +120,7 @@ namespace Project_124.Controllers
                     message.Response = result;
                     message.DateTime = DateTime.UtcNow;
                     message.UserId = id;
-                    await work.UserRepo.AddMessage(message);
+                    await work.Repository.AddMessage(message);
 
                     return Ok("Ok");
                 }
@@ -139,7 +139,7 @@ namespace Project_124.Controllers
                 int access = Int32.Parse(claimAccess.Value);
                 if (access >= 2)
                 {
-                    return Ok(await work.UserRepo.GetMessages(id));
+                    return Ok(await work.Repository.GetMessages(id));
                 }
                 else return BadRequest("No access");
             }
@@ -152,7 +152,7 @@ namespace Project_124.Controllers
             if (claimId != null)
             {
                 int id = Int32.Parse(claimId.Value);
-                return await work.UserRepo.GetCountMessages(id);
+                return await work.Repository.GetCountMessages(id);
             }
             else return NotFound("User not found");
         }

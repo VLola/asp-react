@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-
+import { User } from "./User";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 export class Users extends Component {
   static displayName = Users.name;
@@ -15,24 +17,23 @@ export class Users extends Component {
 
   static renderTable(users) {
     return (
-        <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Question</th>
-            <th>Response</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(item =>
-            <tr key={item.id}>
-              <td>{item.dateTime}</td>
-              <td>{item.question}</td>
-              <td>{item.response}</td>
-            </tr>
+      <Table className="table table-striped">
+        <Thead>
+          <Tr>
+            <Th>Id</Th>
+            <Th>Email</Th>
+            <Th>Block</Th>
+            <Th>EndBlockedTime</Th>
+            <Th>BlockedTime</Th>
+            <Th>Access</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {users.map(user =>
+            <User key={user.id} user={user}/>
           )}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
     );
   }
   
@@ -53,11 +54,10 @@ export class Users extends Component {
     let data = {
         method: 'GET',
         headers: {
-            "Accept": "application/json",
             "Authorization": "Bearer " + token
         }};
-    const response = await fetch('user/GetMessages', data);
-    const users = await response.json();
+    let response = await fetch('admin/GetUsers', data);
+    let users = await response.json();
     this.setState({ users: users, loading: false });
   }
 }
