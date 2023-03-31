@@ -20,9 +20,7 @@ export class Image extends Component {
     let token = sessionStorage.getItem("accessToken");
     let data = {
         method: 'POST',
-        data: fd,
-        contentType: false,
-        processData: false,
+        body: fd,
         headers: {
             "Authorization": "Bearer " + token
         }};
