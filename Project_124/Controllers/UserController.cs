@@ -1,6 +1,5 @@
 ﻿using Amazon.Rekognition;
 using Amazon.Rekognition.Model;
-using Amazon.Runtime.Internal;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -8,9 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenAI_API;
 using Project_124.Models;
 using Project_124.UnitOfWorks;
-using System.Net;
 using System.Security.Claims;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Project_124.Controllers
 {
