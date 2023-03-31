@@ -9,17 +9,24 @@ export class Image extends Component {
     this.state = { text: "", access: access };
     this.click = this.click.bind(this);
     this.changeText = this.changeText.bind(this);
+    this.fileInput = React.createRef();
   }
 
   async click(){
+    let file = this.fileInput.current.files[0];
+    var fd = new FormData();
+    fd.append('file', file);
+    console.log(file.name);
     let token = sessionStorage.getItem("accessToken");
     let data = {
-        method: 'GET',
+        method: 'POST',
+        data: fd,
+        contentType: false,
+        processData: false,
         headers: {
-            "Accept": "application/json",
             "Authorization": "Bearer " + token
         }};
-      let response = await fetch('user/SendText?text=' + this.state.text, data);
+      let response = await fetch('user/SendImage', data);
       let result = await response.text();
       if(response.status === 200){
         alert(result);
@@ -44,7 +51,7 @@ export class Image extends Component {
         return (
             <div className='d-flex flex-column justify-content-center align-items-center'>
                 <div className='d-flex m-5'>
-                    <input type="file" className="btn btn-outline-secondary btn-lg"/>
+                    <input type="file" className="btn btn-outline-secondary btn-lg" ref={this.fileInput}/>
                     <label className="custom-file-label"></label>
                 </div>
                 <div className='d-flex align-items-center'>
@@ -58,7 +65,7 @@ export class Image extends Component {
         return (
             <div className='d-flex flex-column justify-content-center align-items-center'>
                 <div className='d-flex m-5'>
-                    <input type="file" className="btn btn-outline-secondary btn-lg"/>
+                    <input type="file" className="btn btn-outline-secondary btn-lg" ref={this.fileInput}/>
                     <label className="custom-file-label"></label>
                 </div>
                 <div className='d-flex align-items-center'>

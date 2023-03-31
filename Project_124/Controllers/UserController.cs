@@ -1,5 +1,6 @@
 ﻿using Amazon.Rekognition;
 using Amazon.Rekognition.Model;
+using Amazon.Runtime.Internal;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenAI_API;
 using Project_124.Models;
 using Project_124.UnitOfWorks;
+using System.Net;
 using System.Security.Claims;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -54,9 +56,12 @@ namespace Project_124.Controllers
             else return NotFound("User not found");
         }
 
-        [HttpGet("SendImage"), Authorize]
-        public async Task<ActionResult> SendImage(byte[] image)
+        [HttpPost("SendImage"), Authorize]
+        public async Task<ActionResult> SendImage(IFormFile file)
         {
+            if (!TryValidateModel(file, nameof(IFormFile)))
+                return BadRequest("blya");
+            ModelState.ClearValidationState(nameof(IFormFile));
             Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
             Claim? claimAccess = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
             if (claimId != null && claimAccess != null)
@@ -67,24 +72,26 @@ namespace Project_124.Controllers
 
                 if (access == 0 && count > 50) return BadRequest("Message limit reached");
 
+                // Save Image
+
+                string path = work.UserRepo.AddFile(file);
+
                 // Load Image
 
-                string photo = "1.jpg";
+                string imageName = Path.GetFileName(path);
                 string bucket = "valikbucket";
 
-                using (var stream = new MemoryStream(image))
+                var putRequest = new PutObjectRequest
                 {
-                    var request = new PutObjectRequest
-                    {
-                        BucketName = bucket,
-                        InputStream = stream,
-                        ContentType = "image/jpg",
-                        Key = photo
-                    };
-                    IAmazonS3 client = new AmazonS3Client("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
-                    PutObjectResponse response = client.PutObjectAsync(request).Result;
+                    BucketName = bucket,
+                    Key = imageName,
+                    FilePath = path,
+                    ContentType = "text/plain"
+                };
 
-                }
+                putRequest.Metadata.Add("x-amz-meta-title", "someTitle");
+                IAmazonS3 client = new AmazonS3Client("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
+                PutObjectResponse response = client.PutObjectAsync(putRequest).Result;
 
 
                 // Detect text
@@ -96,7 +103,7 @@ namespace Project_124.Controllers
                     Image = new Amazon.Rekognition.Model.Image()
                     {
                         S3Object = new Amazon.Rekognition.Model.S3Object()
-                        { Name = photo, Bucket = bucket },
+                        { Name = imageName, Bucket = bucket },
                     }
                 };
                 string fullText = "";
