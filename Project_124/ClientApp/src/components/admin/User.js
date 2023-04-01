@@ -7,13 +7,11 @@ export class User extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { user: props.user, access: props.user.access, isBlocked: props.user.isBlocked, endBlockedTime: props.user.endBlockedTime, blockedTime: "0" };
+    this.state = { user: props.user, access: props.user.access.toLocaleString(), endBlockedTime: props.user.endBlockedTime, blockedTime: "0" };
     this.click = this.click.bind(this);
     this.changeAccess = this.changeAccess.bind(this);
     this.renderAccess = this.renderAccess.bind(this);
     this.renderUpdate = this.renderUpdate.bind(this);
-    this.changeBlocked = this.changeBlocked.bind(this);
-    this.renderBlocked = this.renderBlocked.bind(this);
     this.renderEndBlockedTime = this.renderEndBlockedTime.bind(this);
     this.changeBlockedTime = this.changeBlockedTime.bind(this);
     this.renderBlockedTime = this.renderBlockedTime.bind(this);
@@ -34,20 +32,8 @@ export class User extends Component {
     );
   }
 
-  changeBlocked(event){
-    this.setState({isBlocked: event.target.checked});
-  }
-
-  renderBlocked(){
-    return(
-        <div>
-            <input className="form-check-input" type="checkbox" checked={this.state.isBlocked}  onChange={this.changeBlocked}></input>
-        </div>
-    );
-  }
-
   renderUpdate(){
-    if(this.state.access !== this.state.user.access || this.state.isBlocked !== this.state.user.isBlocked || this.state.blockedTime !== "0"){
+    if(this.state.access !== this.state.user.access.toLocaleString() || this.state.blockedTime !== "0"){
         return(
             <div className='d-flex align-items-center'>
                 <button className='btn btn-outline-danger btn-sm' onClick={this.click}>Update</button>
@@ -96,6 +82,7 @@ export class User extends Component {
             <option value="3">1 неделя</option>
             <option value="4">3 месяца</option>
             <option value="5">1 год</option>
+            <option value="6">Навсегда</option>
         </select>
     );
   }
@@ -115,13 +102,15 @@ export class User extends Component {
     else if(this.state.blockedTime === "5"){
         dateUTC.setHours(24*365);
     }
+    else if(this.state.blockedTime === "6"){
+        dateUTC.setMonth(12*100);
+    }
 
     let user = this.state.user;
     if(this.state.blockedTime !== "0"){
         user.endBlockedTime = dateUTC;
     }
     user.access = this.state.access;
-    user.isBlocked = this.state.isBlocked;
 
     let token = sessionStorage.getItem("accessToken");
     let data = {
@@ -134,7 +123,7 @@ export class User extends Component {
       let response = await fetch('admin/UpdateUser', data);
       let result = await response.text();
       if(response.status === 200){
-        this.setState({user: user, blockedTime: "0", endBlockedTime: user.endBlockedTime, isBlocked: user.isBlocked, access: user.access});
+        this.setState({user: user, blockedTime: "0", endBlockedTime: user.endBlockedTime, access: user.access});
       }
       else{
         alert(result);
@@ -146,9 +135,6 @@ export class User extends Component {
         <Tr className='align-text-bottom'>
             <Td>{this.state.user.id}</Td>
             <Td>{this.state.user.email}</Td>
-            <Td>
-                {this.renderBlocked()}
-            </Td>
             <Td>
                 {this.renderEndBlockedTime()}
             </Td>

@@ -22,9 +22,8 @@ export class Users extends Component {
           <Tr>
             <Th>Id</Th>
             <Th>Email</Th>
-            <Th>Block</Th>
-            <Th>EndBlockedTime</Th>
-            <Th>BlockedTime</Th>
+            <Th>Blocked</Th>
+            <Th>Action</Th>
             <Th>Access</Th>
           </Tr>
         </Thead>
