@@ -62,7 +62,7 @@ namespace Project_124.Controllers
 
             // Save Image
 
-            string path = work.Repository.AddFile(file);
+            string path = await work.Repository.AddFile(file);
 
             // Upload Image
 
