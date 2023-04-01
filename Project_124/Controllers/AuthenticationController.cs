@@ -29,10 +29,8 @@ namespace Project_124.Controllers
             {
                 // Claims
                 List<Claim> claims = new();
-                claims.Add(new Claim(ClaimTypes.Email, user.Email));
-                claims.Add(new Claim(ClaimTypes.Role, user.Role));
                 claims.Add(new Claim(ClaimTypes.PrimarySid, user.Id.ToString()));
-                claims.Add(new Claim(ClaimTypes.Sid, user.Access.ToString()));
+                claims.Add(new Claim(ClaimTypes.Role, user.Role));
 
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

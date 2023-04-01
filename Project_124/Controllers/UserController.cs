@@ -25,32 +25,28 @@ namespace Project_124.Controllers
         public async Task<ActionResult> SendText(string text)
         {
             Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
-            Claim? claimAccess = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
-            if (claimId != null && claimAccess != null)
-            {
-                int id = Int32.Parse(claimId.Value);
-                int access = Int32.Parse(claimAccess.Value);
-                int count = await work.Repository.GetCountMessages(id);
+            if (claimId == null) return NotFound("Claim not found");
 
-                if (access == 0 && count > 50)  return BadRequest("Message limit reached");
+            User? user = await work.Repository.GetUserAsync(Int32.Parse(claimId.Value));
+            if (user == null) return NotFound("User not found");
+            if(user.EndBlockedTime > DateTime.UtcNow) return BadRequest("User is blocked");
 
-                OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
-                var result = await api.Completions.GetCompletion(text);
+            int count = await work.Repository.GetCountMessagesAsync(user.Id);
+            if (user.Access == 0 && count > 50) return BadRequest("Message limit reached");
 
-                if (result != null)
-                {
-                    Message message = new();
-                    message.Question = text;
-                    message.Response = result;
-                    message.DateTime = DateTime.UtcNow;
-                    message.UserId = id;
-                    await work.Repository.AddMessage(message);
+            OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
 
-                    return Ok("Ok");
-                }
-                return BadRequest("Chat GPT request Exception");
-            }
-            else return NotFound("User not found");
+            var result = await api.Completions.GetCompletion(text);
+            if (result == null) return BadRequest("Chat GPT request Exception");
+
+            Message message = new();
+            message.Question = text;
+            message.Response = result;
+            message.DateTime = DateTime.UtcNow;
+            message.UserId = user.Id;
+            await work.Repository.AddMessageAsync(message);
+
+            return Ok("Ok");
         }
 
         [HttpPost("SendImage"), Authorize]
@@ -59,102 +55,93 @@ namespace Project_124.Controllers
             if (!TryValidateModel(file, nameof(IFormFile)))
                 return BadRequest("blya");
             ModelState.ClearValidationState(nameof(IFormFile));
+
             Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
-            Claim? claimAccess = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
-            if (claimId != null && claimAccess != null)
+            if (claimId == null) return NotFound("Claim not found");
+
+            User? user = await work.Repository.GetUserAsync(Int32.Parse(claimId.Value));
+            if (user == null) return NotFound("User not found");
+            if (user.EndBlockedTime > DateTime.UtcNow) return BadRequest("User is blocked");
+
+            int count = await work.Repository.GetCountMessagesAsync(user.Id);
+
+            if (user.Access == 0 && count > 50) return BadRequest("Message limit reached");
+
+            // Save Image
+
+            string path = work.Repository.AddFile(file);
+
+            // Load Image
+
+            string imageName = Path.GetFileName(path);
+            string bucket = "valikbucket";
+
+            var putRequest = new PutObjectRequest
             {
-                int id = Int32.Parse(claimId.Value);
-                int access = Int32.Parse(claimAccess.Value);
-                int count = await work.Repository.GetCountMessages(id);
+                BucketName = bucket,
+                Key = imageName,
+                FilePath = path,
+                ContentType = "text/plain"
+            };
 
-                if (access == 0 && count > 50) return BadRequest("Message limit reached");
+            putRequest.Metadata.Add("x-amz-meta-title", "someTitle");
+            IAmazonS3 client = new AmazonS3Client("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
+            PutObjectResponse response = client.PutObjectAsync(putRequest).Result;
 
-                // Save Image
 
-                string path = work.Repository.AddFile(file);
+            // Detect text
 
-                // Load Image
+            AmazonRekognitionClient rekognitionClient = new AmazonRekognitionClient("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
 
-                string imageName = Path.GetFileName(path);
-                string bucket = "valikbucket";
-
-                var putRequest = new PutObjectRequest
+            DetectTextRequest detectTextRequest = new DetectTextRequest()
+            {
+                Image = new Amazon.Rekognition.Model.Image()
                 {
-                    BucketName = bucket,
-                    Key = imageName,
-                    FilePath = path,
-                    ContentType = "text/plain"
-                };
-
-                putRequest.Metadata.Add("x-amz-meta-title", "someTitle");
-                IAmazonS3 client = new AmazonS3Client("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
-                PutObjectResponse response = client.PutObjectAsync(putRequest).Result;
-
-
-                // Detect text
-
-                AmazonRekognitionClient rekognitionClient = new AmazonRekognitionClient("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
-
-                DetectTextRequest detectTextRequest = new DetectTextRequest()
-                {
-                    Image = new Amazon.Rekognition.Model.Image()
-                    {
-                        S3Object = new Amazon.Rekognition.Model.S3Object()
-                        { Name = imageName, Bucket = bucket },
-                    }
-                };
-                string fullText = "";
-                DetectTextResponse detectTextResponse = rekognitionClient.DetectTextAsync(detectTextRequest).Result;
-                detectTextResponse.TextDetections.Where(item => item.Type.Value == "WORD").Select(item => item.DetectedText).ToList().ForEach(item => fullText += item + " ");
-
-
-                //Chat Gpt
-
-                OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
-                var result = await api.Completions.GetCompletion(fullText);
-
-                if (result != null)
-                {
-                    Message message = new();
-                    message.Question = fullText;
-                    message.Response = result;
-                    message.DateTime = DateTime.UtcNow;
-                    message.UserId = id;
-                    await work.Repository.AddMessage(message);
-
-                    return Ok("Ok");
+                    S3Object = new Amazon.Rekognition.Model.S3Object()
+                    { Name = imageName, Bucket = bucket },
                 }
-                return BadRequest("Chat GPT request Exception");
-            }
-            else return NotFound("User not found");
+            };
+            string fullText = "";
+            DetectTextResponse detectTextResponse = rekognitionClient.DetectTextAsync(detectTextRequest).Result;
+            detectTextResponse.TextDetections.Where(item => item.Type.Value == "WORD").Select(item => item.DetectedText).ToList().ForEach(item => fullText += item + " ");
+
+
+            //Chat Gpt
+
+            OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
+            var result = await api.Completions.GetCompletion(fullText);
+
+            if (result == null) return BadRequest("Chat GPT request Exception");
+
+            Message message = new();
+            message.Question = fullText;
+            message.Response = result;
+            message.DateTime = DateTime.UtcNow;
+            message.UserId = user.Id;
+            await work.Repository.AddMessageAsync(message);
+
+            return Ok("Ok");
         }
         [HttpGet("GetMessages"), Authorize]
         public async Task<ActionResult<List<Message>>> GetMessages()
         {
             Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
-            Claim? claimAccess = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
-            if (claimId != null && claimAccess != null)
-            {
-                int id = Int32.Parse(claimId.Value);
-                int access = Int32.Parse(claimAccess.Value);
-                if (access >= 2)
-                {
-                    return Ok(await work.Repository.GetMessages(id));
-                }
-                else return BadRequest("No access");
-            }
-            else return NotFound("User not found");
+            if (claimId == null) return NotFound("Claim not found");
+
+            User? user = await work.Repository.GetUserAsync(Int32.Parse(claimId.Value));
+            if (user == null) return NotFound("User not found");
+            if (user.EndBlockedTime > DateTime.UtcNow) return BadRequest("User is blocked");
+
+            if (user.Access >= 2) return Ok(await work.Repository.GetMessagesAsync(user.Id));
+            else return BadRequest("No access");
         }
         [HttpGet("GetCountMessages"), Authorize]
         public async Task<ActionResult<int>> GetCountMessages()
         {
             Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
-            if (claimId != null)
-            {
-                int id = Int32.Parse(claimId.Value);
-                return await work.Repository.GetCountMessages(id);
-            }
-            else return NotFound("User not found");
+            if (claimId == null) return NotFound("Claim not found");
+            int id = Int32.Parse(claimId.Value);
+            return await work.Repository.GetCountMessagesAsync(id);
         }
     }
 }

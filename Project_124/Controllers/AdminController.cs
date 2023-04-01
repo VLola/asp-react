@@ -27,7 +27,7 @@ namespace Project_124.Controllers
                 }
                 else return BadRequest("No access");
             }
-            else return NotFound("User not found");
+            else return NotFound("Claim not found");
         }
         [HttpPost("UpdateUser"), Authorize]
         public async Task<ActionResult> UpdateUser(User user)
@@ -42,7 +42,7 @@ namespace Project_124.Controllers
                 }
                 else return BadRequest("No access");
             }
-            else return NotFound("User not found");
+            else return NotFound("Claim not found");
         }
     }
 }

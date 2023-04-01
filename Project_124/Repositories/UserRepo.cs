@@ -13,16 +13,20 @@ namespace Project_124.Repositories
         {
             this.context = context;
         }
-        public async Task<List<Message>> GetMessages(int id)
+        public async Task<User?> GetUserAsync(int id)
+        {
+            return await context.Users.FindAsync(id);
+        }
+        public async Task<List<Message>> GetMessagesAsync(int id)
         {
             return await context.Messages.Where(message=>message.UserId == id).ToListAsync();
         }
-        public async Task AddMessage(Message message)
+        public async Task AddMessageAsync(Message message)
         {
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
         }
-        public async Task<int> GetCountMessages(int id)
+        public async Task<int> GetCountMessagesAsync(int id)
         {
             DateTime startTime = DateTime.Today;
             DateTime endTime = startTime.AddDays(1);
