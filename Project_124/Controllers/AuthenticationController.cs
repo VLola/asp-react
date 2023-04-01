@@ -20,8 +20,7 @@ namespace Project_124.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(DataUser dataUser)
         {
-            if (!TryValidateModel(dataUser, nameof(DataUser)))
-                return BadRequest();
+            if (!TryValidateModel(dataUser, nameof(DataUser))) return BadRequest("Model not validate");
             ModelState.ClearValidationState(nameof(DataUser));
             if (dataUser is null) return BadRequest("Invalid user request!!!");
             User? user = await work.Repository.CheckUser(dataUser);
@@ -44,26 +43,26 @@ namespace Project_124.Controllers
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                 return Ok(new JWTTokenResponse { Role = user.Role, Access = user.Access, Token = tokenString });
             }
-            return Unauthorized();
+            return Unauthorized("Wrong data!");
         }
 
         [HttpPost("registration")]
         public async Task<ActionResult> Add(DataUser dataUser)
         {
-            if (!TryValidateModel(dataUser, nameof(DataUser))) return BadRequest();
+            if (!TryValidateModel(dataUser, nameof(DataUser))) return BadRequest("Model not validate");
             ModelState.ClearValidationState(nameof(DataUser));
+            if (dataUser is null) return BadRequest("Invalid user request!!!");
             var addr = new System.Net.Mail.MailAddress(dataUser.Email);
             if (addr.Address == dataUser.Email)
             {
-                if (await work.Repository.CheckEmail(dataUser)) return Conflict();
+                if (await work.Repository.CheckEmail(dataUser)) return Conflict("User exist!");
                 else
                 {
                     int id = await work.Repository.Add(dataUser);
-                    string uri = $"/registration/{id}";
-                    return Created(uri, dataUser);
+                    return Ok("Ok");
                 }
             }
-            else return BadRequest();
+            else return BadRequest("Email not validate");
         }
     }
 }

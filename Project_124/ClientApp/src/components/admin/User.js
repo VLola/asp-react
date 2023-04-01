@@ -117,11 +117,12 @@ export class User extends Component {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
+            "Accept": "application/json",
             "Authorization": "Bearer " + token,
             'Content-Type': 'application/json'
         }};
       let response = await fetch('admin/UpdateUser', data);
-      let result = await response.text();
+      let result = await response.json();
       if(response.status === 200){
         this.setState({user: user, blockedTime: "0", endBlockedTime: user.endBlockedTime, access: user.access});
       }

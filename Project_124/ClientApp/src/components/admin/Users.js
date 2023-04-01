@@ -53,7 +53,8 @@ export class Users extends Component {
     let data = {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + token
+          "Accept": "application/json",
+          "Authorization": "Bearer " + token
         }};
     let response = await fetch('admin/GetUsers', data);
     let users = await response.json();

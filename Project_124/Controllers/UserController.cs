@@ -39,7 +39,7 @@ namespace Project_124.Controllers
 
             await work.Repository.AddMessageAsync(text, result, user.Id);
 
-            return Ok("Ok");
+            return Ok(result);
         }
 
         [HttpPost("SendImage"), Authorize]
@@ -82,7 +82,7 @@ namespace Project_124.Controllers
 
             await work.Repository.AddMessageAsync(text, result, user.Id);
 
-            return Ok("Ok");
+            return Ok(result);
         }
         [HttpGet("GetMessages"), Authorize]
         public async Task<ActionResult<List<Message>>> GetMessages()

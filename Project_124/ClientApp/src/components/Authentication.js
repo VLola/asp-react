@@ -22,15 +22,18 @@ export class Authentication extends Component {
   async login(){
     let data = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        "Accept": "application/json",
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify({
         email: this.state.email,
         password: this.state.password
         })
       };
     let response = await fetch('authentication/login', data);
-    let result = await response.json();
     if(response.status === 200){
+      let result = await response.json();
       sessionStorage.setItem("accessToken", result.token);
       sessionStorage.setItem("role", result.role);
       sessionStorage.setItem("access", result.access);
@@ -38,25 +41,35 @@ export class Authentication extends Component {
       this.setState({email: "", password: "", confirmPassword: ""});
       window.location.href = "";
     }
-    console.log(result);
+    else{
+      let result = await response.json();
+      alert(result);
+    }
   }
 
   async registration(){
     if(this.state.password === this.state.confirmPassword){
       let data = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+        "Accept": "application/json",
+        'Content-Type': 'application/json' 
+      },
         body: JSON.stringify({
           email: this.state.email,
           password: this.state.password
           })
         };
       let response = await fetch('authentication/registration', data);
-      let result = await response.json();
-      console.log(result);
+      if(response.status === 200){
+        this.setState({email: "", password: "", confirmPassword: ""});
+      }
+      else{
+        let result = await response.json();
+        alert(result);
+      }
     }
     else alert("Password mismatch!");
-    this.setState({email: "", password: "", confirmPassword: ""});
   }
 
   

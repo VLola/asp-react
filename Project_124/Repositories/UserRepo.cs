@@ -6,6 +6,7 @@ using Project_124.Models;
 using Amazon.S3.Model;
 using Amazon.S3;
 using OpenAI_API;
+using OpenAI.Net;
 
 namespace Project_124.Repositories
 {
@@ -21,7 +22,7 @@ namespace Project_124.Repositories
         {
             return await context.Users.FindAsync(id);
         }
-        public async Task<List<Message>> GetMessagesAsync(int id)
+        public async Task<List<Models.Message>> GetMessagesAsync(int id)
         {
             return await context.Messages.Where(message=>message.UserId == id).ToListAsync();
         }
@@ -97,12 +98,33 @@ namespace Project_124.Repositories
         }
         public async Task<string> SendTextAsync(string text)
         {
-            OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
-            return await api.Completions.GetCompletion(text);
+            //OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
+            //return await api.Completions.GetCompletion(text);
+
+            using var host = Host.CreateDefaultBuilder()
+            .ConfigureServices((builder, services) =>
+            {
+                services.AddOpenAIServices(options => {
+                    options.ApiKey = "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";
+                });
+            })
+            .Build();
+
+            var openAi = host.Services.GetService<IOpenAIService>();
+            if (openAi == null) return "";
+            var response = await openAi.TextCompletion.Get(text);
+
+            string fullText = "";
+            if (response.IsSuccess)
+            {
+                foreach (var result in response.Result.Choices) fullText += result.Text;
+            }
+            else fullText += response.ErrorMessage;
+            return fullText;
         }
         public async Task AddMessageAsync(string question, string response, int id)
         {
-            Message message = new();
+            Models.Message message = new();
             message.Question = question;
             message.Response = response;
             message.DateTime = DateTime.UtcNow;

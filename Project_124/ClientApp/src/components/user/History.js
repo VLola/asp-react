@@ -57,8 +57,16 @@ export class History extends Component {
             "Accept": "application/json",
             "Authorization": "Bearer " + token
         }};
-    const response = await fetch('user/GetMessages', data);
-    const messages = await response.json();
-    this.setState({ messages: messages, loading: false });
+    let response = await fetch('user/GetMessages', data);
+    if(response.status === 200){
+      let messages = await response.json();
+      this.setState({ messages: messages, loading: false });
+    }
+    else if(response.status === 401){
+      sessionStorage.setItem("accessToken", "");
+      sessionStorage.setItem("role", "");
+      sessionStorage.setItem("access", "");
+      sessionStorage.setItem("isLogin", "");
+    }
   }
 }

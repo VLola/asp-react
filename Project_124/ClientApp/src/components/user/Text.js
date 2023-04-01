@@ -6,7 +6,7 @@ export class Text extends Component {
   constructor(props) {
     super(props);
     let access = sessionStorage.getItem("access");
-    this.state = { text: "", access: access };
+    this.state = { text: "", access: access, result: "" };
     this.click = this.click.bind(this);
     this.changeText = this.changeText.bind(this);
   }
@@ -20,12 +20,14 @@ export class Text extends Component {
             "Authorization": "Bearer " + token
         }};
       let response = await fetch('user/SendText?text=' + this.state.text, data);
-      let result = await response.text();
+      let result = await response.json();
       if(response.status === 200){
+        this.setState({result: result});
+        this.loadCountMessages();
+      }
+      else{
         alert(result);
       }
-      console.log(result);
-      this.loadCountMessages();
   }
 
 
@@ -50,6 +52,9 @@ export class Text extends Component {
                     <h4 className='m-3 text-muted'>Limit: {50 - this.state.count}</h4>
                     <button className="btn btn-outline-secondary btn-lg" onClick={this.click}>Send</button>
                 </div>
+                <pre className='text-center text-muted'>
+                  <h3>{this.state.result}</h3>
+                </pre>
             </div>
         );
     }
@@ -62,6 +67,9 @@ export class Text extends Component {
                 <div className='d-flex justify-content-end'>
                     <button className="btn btn-outline-secondary btn-lg px-5" onClick={this.click}>Send</button>
                 </div>
+                <pre className='text-center text-muted'>
+                  <h3>{this.state.result}</h3>
+                </pre>
             </div>
         );
     }
@@ -74,8 +82,15 @@ export class Text extends Component {
             "Authorization": "Bearer " + token
         }};
     let response = await fetch('user/GetCountMessages', data);
-    let count = await response.text();
-    this.setState({ count: count });
-    // console.log(count);
+    if(response.status === 200){
+      let count = await response.json();
+      this.setState({ count: count });
+    }
+    else if(response.status === 401){
+      sessionStorage.setItem("accessToken", "");
+      sessionStorage.setItem("role", "");
+      sessionStorage.setItem("access", "");
+      sessionStorage.setItem("isLogin", "");
+    }
   }
 }

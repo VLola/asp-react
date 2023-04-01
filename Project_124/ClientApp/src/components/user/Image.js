@@ -6,7 +6,7 @@ export class Image extends Component {
   constructor(props) {
     super(props);
     let access = sessionStorage.getItem("access");
-    this.state = { text: "", access: access };
+    this.state = { text: "", access: access, result: "" };
     this.click = this.click.bind(this);
     this.changeText = this.changeText.bind(this);
     this.fileInput = React.createRef();
@@ -22,15 +22,18 @@ export class Image extends Component {
         method: 'POST',
         body: fd,
         headers: {
-            "Authorization": "Bearer " + token
+          "Accept": "application/json",
+          "Authorization": "Bearer " + token
         }};
       let response = await fetch('user/SendImage', data);
-      let result = await response.text();
+      let result = await response.json();
       if(response.status === 200){
+        this.setState({result: result});
+        this.loadCountMessages();
+      }
+      else{
         alert(result);
       }
-      console.log(result);
-      this.loadCountMessages();
   }
 
 
@@ -56,6 +59,9 @@ export class Image extends Component {
                     <h4 className='m-3 text-muted'>Limit: {50 - this.state.count}</h4>
                     <button className="btn btn-outline-secondary btn-lg px-5" onClick={this.click}>Send</button>
                 </div>
+                <pre className='text-center text-muted'>
+                  <h3>{this.state.result}</h3>
+                </pre>
             </div>
         );
     }
@@ -69,6 +75,9 @@ export class Image extends Component {
                 <div className='d-flex align-items-center'>
                     <button className="btn btn-outline-secondary btn-lg px-5" onClick={this.click}>Send</button>
                 </div>
+                <pre className='text-center text-muted'>
+                  <h3>{this.state.result}</h3>
+                </pre>
             </div>
         );
     }
@@ -81,7 +90,15 @@ export class Image extends Component {
             "Authorization": "Bearer " + token
         }};
     let response = await fetch('user/GetCountMessages', data);
-    let count = await response.text();
-    this.setState({ count: count });
+    if(response.status === 200){
+      let count = await response.json();
+      this.setState({ count: count });
+    }
+    else if(response.status === 401){
+      sessionStorage.setItem("accessToken", "");
+      sessionStorage.setItem("role", "");
+      sessionStorage.setItem("access", "");
+      sessionStorage.setItem("isLogin", "");
+    }
   }
 }
