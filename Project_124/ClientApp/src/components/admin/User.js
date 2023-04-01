@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Tr, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 export class User extends Component {
@@ -7,7 +7,7 @@ export class User extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { user: props.user, access: props.user.access, isBlocked: props.user.isBlocked, endBlockedTime: props.user.endBlockedTime, blockedTime: 0 };
+    this.state = { user: props.user, access: props.user.access, isBlocked: props.user.isBlocked, endBlockedTime: props.user.endBlockedTime, blockedTime: "0" };
     this.click = this.click.bind(this);
     this.changeAccess = this.changeAccess.bind(this);
     this.renderAccess = this.renderAccess.bind(this);
@@ -47,7 +47,7 @@ export class User extends Component {
   }
 
   renderUpdate(){
-    if(this.state.access != this.state.user.access || this.state.isBlocked != this.state.user.isBlocked || this.state.blockedTime != 0){
+    if(this.state.access !== this.state.user.access || this.state.isBlocked !== this.state.user.isBlocked || this.state.blockedTime !== "0"){
         return(
             <div className='d-flex align-items-center'>
                 <button className='btn btn-outline-danger btn-sm' onClick={this.click}>Update</button>
@@ -95,17 +95,50 @@ export class User extends Component {
             <option value="2">1 день</option>
             <option value="3">1 неделя</option>
             <option value="4">3 месяца</option>
-            <option value="3">1 год</option>
+            <option value="5">1 год</option>
         </select>
     );
   }
 
-  click(){
-    this.state.user.access = this.state.access;
-    this.state.user.isBlocked = this.state.isBlocked;
-    this.state.user.endBlockedTime = this.state.endBlockedTime;
-    this.setState({user: this.state.user});
-    console.log(this.state.user);
+  async click(){
+    let date = new Date();
+    let dateUTC = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+    if(this.state.blockedTime === "2"){
+        dateUTC.setHours(24);
+    }
+    else if(this.state.blockedTime === "3"){
+        dateUTC.setHours(24*7);
+    }
+    else if(this.state.blockedTime === "4"){
+        dateUTC.setHours(24*90);
+    }
+    else if(this.state.blockedTime === "5"){
+        dateUTC.setHours(24*365);
+    }
+
+    let user = this.state.user;
+    if(this.state.blockedTime !== "0"){
+        user.endBlockedTime = dateUTC;
+    }
+    user.access = this.state.access;
+    user.isBlocked = this.state.isBlocked;
+
+    let token = sessionStorage.getItem("accessToken");
+    let data = {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+        }};
+      let response = await fetch('admin/UpdateUser', data);
+      let result = await response.text();
+      if(response.status === 200){
+        this.setState({user: user, blockedTime: "0", endBlockedTime: user.endBlockedTime, isBlocked: user.isBlocked, access: user.access});
+      }
+      else{
+        alert(result);
+      }
   }
   
   render() {

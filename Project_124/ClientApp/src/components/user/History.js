@@ -27,7 +27,7 @@ export class History extends Component {
         <Tbody>
           {messages.map(item =>
             <Tr key={item.id}>
-              <Td>{item.dateTime}</Td>
+              <Td>{new Date(item.dateTime).toLocaleString('en-US')}</Td>
               <Td>{item.question}</Td>
               <Td>{item.response}</Td>
             </Tr>

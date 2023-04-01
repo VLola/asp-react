@@ -10,11 +10,14 @@ namespace Project_124.Repositories
         {
             this.context = context;
         }
-        public User? Get(int id) => context.Users.Find(id);
         public IEnumerable<User> GetUsers()
         {
             return context.Users.Where(user=>user.Role == "User");
         }
-
+        public async Task UpdateUser(User user)
+        {
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+        }
     }
 }

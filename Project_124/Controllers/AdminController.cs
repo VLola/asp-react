@@ -29,5 +29,20 @@ namespace Project_124.Controllers
             }
             else return NotFound("User not found");
         }
+        [HttpPost("UpdateUser"), Authorize]
+        public async Task<ActionResult> UpdateUser(User user)
+        {
+            Claim? claimRole = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            if (claimRole != null)
+            {
+                if (claimRole.Value == "Admin")
+                {
+                    await work.Repository.UpdateUser(user);
+                    return Ok();
+                }
+                else return BadRequest("No access");
+            }
+            else return NotFound("User not found");
+        }
     }
 }
