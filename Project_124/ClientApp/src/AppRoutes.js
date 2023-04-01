@@ -7,6 +7,7 @@ import { History } from "./components/user/History";
 import { Users } from "./components/admin/Users";
 import { Landing } from "./components/Landing";
 import { Payment } from "./components/user/Payment";
+import { Subscriptions } from "./components/admin/Subscriptions";
 
 let AppRoutes;
 let role = sessionStorage.getItem("role");
@@ -16,7 +17,8 @@ if(isLogin === "true"){
   if(role === "Admin"){
     AppRoutes = [
       { index: true, element: <Home /> },
-      { path: '/fetch-users', element: <Users /> }
+      { path: '/fetch-users', element: <Users /> },
+      { path: '/subscriptions', element: <Subscriptions /> }
     ];
   }
   else if(role === "User"){

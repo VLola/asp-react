@@ -24,6 +24,7 @@ export class Payment extends Component {
           if(response.status === 200){
             this.setState({access: event.target.value});
             sessionStorage.setItem("access", event.target.value);
+            window.open("https://privatbank.ua/");
           }
           else if(response.status === 401){
             sessionStorage.setItem("accessToken", "");
@@ -43,16 +44,16 @@ export class Payment extends Component {
             <h3 className='text-center text-muted'>VIP {this.state.access}</h3>
             <div className='d-flex justify-content-end align-items-center'>
                 {this.state.access === "0"?(<>
-                    <button className="btn btn-outline-secondary btn-lg m-3" value={"1"} onClick={this.click}>Buy VIP 1</button>
-                    <button className="btn btn-outline-secondary btn-lg m-3" value={"2"} onClick={this.click}>Buy VIP 2</button>
-                    <button className="btn btn-outline-secondary btn-lg m-3" value={"3"} onClick={this.click}>Buy VIP 3</button>
+                    <button className="btn btn-outline-secondary btn-lg m-3" value={"1"} onClick={this.click}>Buy VIP1 (5 $)</button>
+                    <button className="btn btn-outline-secondary btn-lg m-3" value={"2"} onClick={this.click}>Buy VIP2 (25 $)</button>
+                    <button className="btn btn-outline-secondary btn-lg m-3" value={"3"} onClick={this.click}>Buy VIP3 (50 $)</button>
                 </>):(<></>)}
                 {this.state.access === "1"?(<>
-                    <button className="btn btn-outline-secondary btn-lg m-3" value={"2"} onClick={this.click}>Buy VIP 2</button>
-                    <button className="btn btn-outline-secondary btn-lg m-3" value={"3"} onClick={this.click}>Buy VIP 3</button>
+                    <button className="btn btn-outline-secondary btn-lg m-3" value={"2"} onClick={this.click}>Buy VIP2 (20 $)</button>
+                    <button className="btn btn-outline-secondary btn-lg m-3" value={"3"} onClick={this.click}>Buy VIP3 (45 $)</button>
                 </>):(<></>)}
                 {this.state.access === "2"?(<>
-                    <button className="btn btn-outline-secondary btn-lg m-3" value={"3"} onClick={this.click}>Buy VIP 3</button>
+                    <button className="btn btn-outline-secondary btn-lg m-3" value={"3"} onClick={this.click}>Buy VIP3 (25 $)</button>
                 </>):(<></>)}
             </div>
         </div>
