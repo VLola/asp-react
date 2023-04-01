@@ -153,5 +153,15 @@ namespace Project_124.Repositories
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
         }
+        public async Task UpdateUserAsync(User user)
+        {
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+        }
+        public async Task AddBuyAsync(Buy buy)
+        {
+            await context.Buys.AddAsync(buy);
+            await context.SaveChangesAsync();
+        }
     }
 }

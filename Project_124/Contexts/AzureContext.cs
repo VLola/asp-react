@@ -5,6 +5,7 @@ namespace Project_124.Contexts
 {
     public class AzureContext : DbContext
     {
+        public DbSet<Buy> Buys { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Message> Messages { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

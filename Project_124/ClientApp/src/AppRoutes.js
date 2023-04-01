@@ -6,6 +6,7 @@ import { Audio } from "./components/user/Audio/Audio";
 import { History } from "./components/user/History";
 import { Users } from "./components/admin/Users";
 import { Landing } from "./components/Landing";
+import { Payment } from "./components/user/Payment";
 
 let AppRoutes;
 let role = sessionStorage.getItem("role");
@@ -24,7 +25,8 @@ if(isLogin === "true"){
       AppRoutes = [
         { index: true, element: <Home /> },
         { path: '/text', element: <Text /> },
-        { path: '/image', element: <Image /> }
+        { path: '/image', element: <Image /> },
+        { path: '/payment', element: <Payment /> }
       ];
     }
     else if(access === "2"){
@@ -32,7 +34,8 @@ if(isLogin === "true"){
         { index: true, element: <Home /> },
         { path: '/text', element: <Text /> },
         { path: '/image', element: <Image /> },
-        { path: '/history', element: <History /> }
+        { path: '/history', element: <History /> },
+        { path: '/payment', element: <Payment /> }
       ];
     }
     else if(access === "3"){

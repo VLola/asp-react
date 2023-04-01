@@ -143,5 +143,37 @@ namespace Project_124.Controllers
             int id = Int32.Parse(claimId.Value);
             return await work.Repository.GetCountMessagesAsync(id);
         }
+        [HttpGet("BuyAccess"), Authorize]
+        public async Task<ActionResult> BuyAccess(int access)
+        {
+            Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
+            if (claimId == null) return NotFound("Claim not found");
+
+            User? user = await work.Repository.GetUserAsync(Int32.Parse(claimId.Value));
+            if (user == null) return NotFound("User not found");
+            if (user.EndBlockedTime > DateTime.UtcNow) return BadRequest("User is blocked");
+
+            if (user.Access >= access) return BadRequest("Up access error!");
+
+            Buy buy = new();
+            buy.Email = user.Email;
+            buy.OldAccess = user.Access;
+            buy.NewAccess = access;
+
+            user.Access = access;
+            await work.Repository.UpdateUserAsync(user);
+
+            if (buy.OldAccess == 0 && buy.NewAccess == 1) buy.Cost = 5;
+            else if (buy.OldAccess == 0 && buy.NewAccess == 2) buy.Cost = 25;
+            else if (buy.OldAccess == 0 && buy.NewAccess == 3) buy.Cost = 50;
+            else if (buy.OldAccess == 1 && buy.NewAccess == 2) buy.Cost = 20;
+            else if (buy.OldAccess == 1 && buy.NewAccess == 3) buy.Cost = 45;
+            else if (buy.OldAccess == 2 && buy.NewAccess == 3) buy.Cost = 25;
+            else buy.Cost = 0;
+
+            await work.Repository.AddBuyAsync(buy);
+
+            return Ok("Ok");
+        }
     }
 }

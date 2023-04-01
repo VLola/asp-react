@@ -18,7 +18,7 @@ export class NavMenu extends Component {
     this.renderLoginLinks = this.renderLoginLinks.bind(this);
     this.renderAdminLinks = this.renderAdminLinks.bind(this);
     this.renderUserLinks = this.renderUserLinks.bind(this);
-    this.renderLinkHistory = this.renderLinkHistory.bind(this);
+    this.renderLinkOther = this.renderLinkOther.bind(this);
   }
 
   click(){
@@ -35,13 +35,25 @@ export class NavMenu extends Component {
     });
   }
 
-  renderLinkHistory(){
+  renderLinkOther(){
     let access = sessionStorage.getItem("access");
-    if(access === "2"){
+    if(access === "0" || access === "1"){
       return(
         <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/history">History</NavLink>
+          <NavLink tag={Link} className="text-dark" to="/payment">Payment</NavLink>
         </NavItem>
+      );
+    }
+    else if(access === "2"){
+      return(
+        <>
+          <NavItem>
+            <NavLink tag={Link} className="text-dark" to="/history">History</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} className="text-dark" to="/payment">Payment</NavLink>
+          </NavItem>
+        </>
       );
     }
     else if(access === "3"){
@@ -73,7 +85,7 @@ export class NavMenu extends Component {
         <NavItem>
           <NavLink tag={Link} className="text-dark" to="/image">Image</NavLink>
         </NavItem>
-        {this.renderLinkHistory()}
+        {this.renderLinkOther()}
       </>
     );
   }
