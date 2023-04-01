@@ -13,6 +13,7 @@ namespace Project_124.Repositories
     public class UserRepo
     {
         string pathFiles = Directory.GetCurrentDirectory() + "/Files/";
+        string ApiKeyGPT = "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";
         public AzureContext context;
         public UserRepo(AzureContext context)
         {
@@ -105,7 +106,7 @@ namespace Project_124.Repositories
             .ConfigureServices((builder, services) =>
             {
                 services.AddOpenAIServices(options => {
-                    options.ApiKey = "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";
+                    options.ApiKey = ApiKeyGPT;
                 });
             })
             .Build();
@@ -129,7 +130,7 @@ namespace Project_124.Repositories
             .ConfigureServices((builder, services) =>
             {
                 services.AddOpenAIServices(options => {
-                    options.ApiKey = "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";
+                    options.ApiKey = ApiKeyGPT;
                 });
             })
             .Build();

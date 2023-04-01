@@ -5,6 +5,7 @@ import { Image } from "./components/user/Image";
 import { Audio } from "./components/user/Audio/Audio";
 import { History } from "./components/user/History";
 import { Users } from "./components/admin/Users";
+import { Landing } from "./components/Landing";
 
 let AppRoutes;
 let role = sessionStorage.getItem("role");
@@ -53,6 +54,7 @@ if(isLogin === "true"){
 else{
   AppRoutes = [
     { index: true, element: <Home /> },
+    { path: '/landing', element: <Landing /> },
     { path: '/auth', element: <Authentication /> }
   ]
 }

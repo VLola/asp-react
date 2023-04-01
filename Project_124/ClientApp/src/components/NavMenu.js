@@ -124,9 +124,14 @@ export class NavMenu extends Component {
     }
     else{
       return(
-        <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/auth">Authorization</NavLink>
-        </NavItem>
+        <>
+          <NavItem>
+            <NavLink tag={Link} className="text-dark" to="/landing">Landing</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} className="text-dark" to="/auth">Authorization</NavLink>
+          </NavItem>
+        </>
       );
     }
   }
