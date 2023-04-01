@@ -126,6 +126,12 @@ export class User extends Component {
       if(response.status === 200){
         this.setState({user: user, blockedTime: "0", endBlockedTime: user.endBlockedTime, access: user.access});
       }
+      else if(response.status === 401){
+        sessionStorage.setItem("accessToken", "");
+        sessionStorage.setItem("role", "");
+        sessionStorage.setItem("access", "");
+        sessionStorage.setItem("isLogin", "");
+      }
       else{
         alert(result);
       }

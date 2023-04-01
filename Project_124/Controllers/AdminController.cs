@@ -38,7 +38,7 @@ namespace Project_124.Controllers
                 if (claimRole.Value == "Admin")
                 {
                     await work.Repository.UpdateUser(user);
-                    return Ok();
+                    return Ok("Ok");
                 }
                 else return BadRequest("No access");
             }

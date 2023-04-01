@@ -57,7 +57,15 @@ export class Users extends Component {
           "Authorization": "Bearer " + token
         }};
     let response = await fetch('admin/GetUsers', data);
-    let users = await response.json();
-    this.setState({ users: users, loading: false });
+    if(response.status === 200){
+      let users = await response.json();
+      this.setState({ users: users, loading: false });
+    }
+    else if(response.status === 401){
+      sessionStorage.setItem("accessToken", "");
+      sessionStorage.setItem("role", "");
+      sessionStorage.setItem("access", "");
+      sessionStorage.setItem("isLogin", "");
+    }
   }
 }

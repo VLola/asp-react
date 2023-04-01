@@ -2,6 +2,7 @@ import { Home } from "./components/Home";
 import { Authentication } from "./components/Authentication";
 import { Text } from "./components/user/Text";
 import { Image } from "./components/user/Image";
+import { Audio } from "./components/user/Audio/Audio";
 import { History } from "./components/user/History";
 import { Users } from "./components/admin/Users";
 
@@ -12,55 +13,47 @@ let isLogin = sessionStorage.getItem("isLogin");
 if(isLogin === "true"){
   if(role === "Admin"){
     AppRoutes = [
-      {
-        index: true,
-        element: <Home />
-      },
-      {
-        path: '/fetch-users',
-        element: <Users />
-      }
+      { index: true, element: <Home /> },
+      { path: '/fetch-users', element: <Users /> }
     ];
   }
   else if(role === "User"){
-    AppRoutes = [
-      {
-        index: true,
-        element: <Home />
-      },
-      {
-        path: '/text',
-        element: <Text />
-      },
-      {
-        path: '/image',
-        element: <Image />
-      },
-      {
-        path: '/history',
-        element: <History />
-      }
-    ];
+    let access = sessionStorage.getItem("access");
+    if(access === "0" || access === "1"){
+      AppRoutes = [
+        { index: true, element: <Home /> },
+        { path: '/text', element: <Text /> },
+        { path: '/image', element: <Image /> }
+      ];
+    }
+    else if(access === "2"){
+      AppRoutes = [
+        { index: true, element: <Home /> },
+        { path: '/text', element: <Text /> },
+        { path: '/image', element: <Image /> },
+        { path: '/history', element: <History /> }
+      ];
+    }
+    else if(access === "3"){
+      AppRoutes = [
+        { index: true, element: <Home /> },
+        { path: '/text', element: <Text /> },
+        { path: '/image', element: <Image /> },
+        { path: '/audio', element: <Audio /> },
+        { path: '/history', element: <History /> }
+      ];
+    }
   }
   else{
     AppRoutes = [
-      {
-        index: true,
-        element: <Home />
-      }
+      { index: true, element: <Home /> }
     ];
   }
 }
 else{
   AppRoutes = [
-    {
-      index: true,
-      element: <Home />
-    },
-    {
-      path: '/auth',
-      element: <Authentication />
-    }
+    { index: true, element: <Home /> },
+    { path: '/auth', element: <Authentication /> }
   ]
 }
 

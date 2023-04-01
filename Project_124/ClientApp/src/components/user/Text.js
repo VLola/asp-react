@@ -25,6 +25,12 @@ export class Text extends Component {
         this.setState({result: result});
         this.loadCountMessages();
       }
+      else if(response.status === 401){
+        sessionStorage.setItem("accessToken", "");
+        sessionStorage.setItem("role", "");
+        sessionStorage.setItem("access", "");
+        sessionStorage.setItem("isLogin", "");
+      }
       else{
         alert(result);
       }

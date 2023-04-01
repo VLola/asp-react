@@ -105,7 +105,7 @@ namespace Project_124.Repositories
             .ConfigureServices((builder, services) =>
             {
                 services.AddOpenAIServices(options => {
-                    options.ApiKey = "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";
+                    options.ApiKey = "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";
                 });
             })
             .Build();
@@ -120,6 +120,26 @@ namespace Project_124.Repositories
                 foreach (var result in response.Result.Choices) fullText += result.Text;
             }
             else fullText += response.ErrorMessage;
+            return fullText;
+        }
+        public async Task<string> SendVoiceAsync(string path)
+        {
+
+            using var host = Host.CreateDefaultBuilder()
+            .ConfigureServices((builder, services) =>
+            {
+                services.AddOpenAIServices(options => {
+                    options.ApiKey = "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";
+                });
+            })
+            .Build();
+
+            var openAi = host.Services.GetService<IOpenAIService>();
+            if (openAi == null) return "";
+            var response = await openAi.Audio.GetTranscription(path);
+            string fullText = "";
+            if (response.IsSuccess) fullText = response.Result.Text;
+            else fullText = response.ErrorMessage;
             return fullText;
         }
         public async Task AddMessageAsync(string question, string response, int id)

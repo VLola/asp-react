@@ -14,6 +14,10 @@ export class Image extends Component {
 
   async click(){
     let file = this.fileInput.current.files[0];
+    if(file == null) {
+      alert("Selected file!");
+      return;
+    }
     var fd = new FormData();
     fd.append('file', file);
     console.log(file.name);
@@ -30,6 +34,12 @@ export class Image extends Component {
       if(response.status === 200){
         this.setState({result: result});
         this.loadCountMessages();
+      }
+      else if(response.status === 401){
+        sessionStorage.setItem("accessToken", "");
+        sessionStorage.setItem("role", "");
+        sessionStorage.setItem("access", "");
+        sessionStorage.setItem("isLogin", "");
       }
       else{
         alert(result);

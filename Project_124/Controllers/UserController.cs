@@ -45,8 +45,7 @@ namespace Project_124.Controllers
         [HttpPost("SendImage"), Authorize]
         public async Task<ActionResult> SendImage(IFormFile file)
         {
-            if (!TryValidateModel(file, nameof(IFormFile)))
-                return BadRequest("blya");
+            if (!TryValidateModel(file, nameof(IFormFile))) return BadRequest("Not validate model");
             ModelState.ClearValidationState(nameof(IFormFile));
 
             Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
@@ -83,6 +82,44 @@ namespace Project_124.Controllers
             await work.Repository.AddMessageAsync(text, result, user.Id);
 
             return Ok(result);
+        }
+
+        [HttpPost("SendVoice"), Authorize]
+        public async Task<ActionResult> SendVoice(IFormFile file)
+        {
+            if (!TryValidateModel(file, nameof(IFormFile))) return BadRequest("Not validate model");
+            ModelState.ClearValidationState(nameof(IFormFile));
+
+            Claim? claimId = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid);
+            if (claimId == null) return NotFound("Claim not found");
+
+            User? user = await work.Repository.GetUserAsync(Int32.Parse(claimId.Value));
+            if (user == null) return NotFound("User not found");
+            if (user.EndBlockedTime > DateTime.UtcNow) return BadRequest("User is blocked");
+            if (user.Access < 3) return BadRequest("No access");
+
+            //// Save Voice
+
+            string path = await work.Repository.AddFile(file);
+
+            ////Chat Gpt detect text
+
+            var text = await work.Repository.SendVoiceAsync(path);
+
+            if (text == null || text == "") return BadRequest("Chat GPT request Exception");
+
+
+            //Chat Gpt
+
+            var result = await work.Repository.SendTextAsync(text);
+
+            if (result == null || result == "") return BadRequest("Chat GPT request Exception");
+
+            //Save message
+
+            await work.Repository.AddMessageAsync(text, result, user.Id);
+
+            return Ok(new VoiceResponse() { Question = text, Response = result });
         }
         [HttpGet("GetMessages"), Authorize]
         public async Task<ActionResult<List<Message>>> GetMessages()
