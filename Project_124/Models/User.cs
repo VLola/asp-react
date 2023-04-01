@@ -7,7 +7,6 @@
         public string Password { get; set; } = String.Empty;
         public string Role { get; set; } = String.Empty;
         public int Access { get; set; }
-        public bool IsBlocked { get; set; }
         public DateTime EndBlockedTime { get; set; }
     }
 }

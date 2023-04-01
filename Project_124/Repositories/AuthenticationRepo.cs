@@ -16,7 +16,6 @@ namespace Project_124.Repositories
             User user = new User();
             user.Email = dataUser.Email;
             user.Password = dataUser.Password;
-            user.IsBlocked = false;
             user.Access = 0;
             user.Role = "User";
             context.Users.Add(user);

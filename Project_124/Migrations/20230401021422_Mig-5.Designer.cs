@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_124.Contexts;
 
@@ -11,9 +12,10 @@ using Project_124.Contexts;
 namespace Project_124.Migrations
 {
     [DbContext(typeof(AzureContext))]
-    partial class AzureContextModelSnapshot : ModelSnapshot
+    [Migration("20230401021422_Mig-5")]
+    partial class Mig5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
