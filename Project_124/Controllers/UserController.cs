@@ -1,10 +1,5 @@
-﻿using Amazon.Rekognition;
-using Amazon.Rekognition.Model;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OpenAI_API;
 using Project_124.Models;
 using Project_124.UnitOfWorks;
 using System.Security.Claims;
@@ -34,17 +29,15 @@ namespace Project_124.Controllers
             int count = await work.Repository.GetCountMessagesAsync(user.Id);
             if (user.Access == 0 && count > 50) return BadRequest("Message limit reached");
 
-            OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
+            //Chat Gpt
 
-            var result = await api.Completions.GetCompletion(text);
-            if (result == null) return BadRequest("Chat GPT request Exception");
+            var result = await work.Repository.SendTextAsync(text);
 
-            Message message = new();
-            message.Question = text;
-            message.Response = result;
-            message.DateTime = DateTime.UtcNow;
-            message.UserId = user.Id;
-            await work.Repository.AddMessageAsync(message);
+            if (result == null || result == "") return BadRequest("Chat GPT request Exception");
+
+            //Save message
+
+            await work.Repository.AddMessageAsync(text, result, user.Id);
 
             return Ok("Ok");
         }
@@ -71,54 +64,23 @@ namespace Project_124.Controllers
 
             string path = work.Repository.AddFile(file);
 
-            // Load Image
+            // Upload Image
 
-            string imageName = Path.GetFileName(path);
-            string bucket = "valikbucket";
-
-            var putRequest = new PutObjectRequest
-            {
-                BucketName = bucket,
-                Key = imageName,
-                FilePath = path,
-                ContentType = "text/plain"
-            };
-
-            putRequest.Metadata.Add("x-amz-meta-title", "someTitle");
-            IAmazonS3 client = new AmazonS3Client("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
-            PutObjectResponse response = client.PutObjectAsync(putRequest).Result;
-
+            await work.Repository.UploadImageAsync(path);
 
             // Detect text
 
-            AmazonRekognitionClient rekognitionClient = new AmazonRekognitionClient("AKIA6PVL36AGMXQV32FU", "TvPsi8ZFioNPgWtKLfA5A5rOQU9KoHY9Fva5aK9n", Amazon.RegionEndpoint.USWest2);
-
-            DetectTextRequest detectTextRequest = new DetectTextRequest()
-            {
-                Image = new Amazon.Rekognition.Model.Image()
-                {
-                    S3Object = new Amazon.Rekognition.Model.S3Object()
-                    { Name = imageName, Bucket = bucket },
-                }
-            };
-            string fullText = "";
-            DetectTextResponse detectTextResponse = rekognitionClient.DetectTextAsync(detectTextRequest).Result;
-            detectTextResponse.TextDetections.Where(item => item.Type.Value == "WORD").Select(item => item.DetectedText).ToList().ForEach(item => fullText += item + " ");
-
+            string text = await work.Repository.DetectTextAsync(path);
 
             //Chat Gpt
 
-            OpenAIAPI api = new OpenAIAPI(new APIAuthentication("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", "org-QJVBWCJXr5P8ILTVhZU9h5tH"));
-            var result = await api.Completions.GetCompletion(fullText);
+            var result = await work.Repository.SendTextAsync(text);
 
-            if (result == null) return BadRequest("Chat GPT request Exception");
+            if (result == null || result == "") return BadRequest("Chat GPT request Exception");
 
-            Message message = new();
-            message.Question = fullText;
-            message.Response = result;
-            message.DateTime = DateTime.UtcNow;
-            message.UserId = user.Id;
-            await work.Repository.AddMessageAsync(message);
+            //Save message
+
+            await work.Repository.AddMessageAsync(text, result, user.Id);
 
             return Ok("Ok");
         }
@@ -132,8 +94,9 @@ namespace Project_124.Controllers
             if (user == null) return NotFound("User not found");
             if (user.EndBlockedTime > DateTime.UtcNow) return BadRequest("User is blocked");
 
-            if (user.Access >= 2) return Ok(await work.Repository.GetMessagesAsync(user.Id));
-            else return BadRequest("No access");
+            if (user.Access < 2) return BadRequest("No access");
+
+            return Ok(await work.Repository.GetMessagesAsync(user.Id));
         }
         [HttpGet("GetCountMessages"), Authorize]
         public async Task<ActionResult<int>> GetCountMessages()
