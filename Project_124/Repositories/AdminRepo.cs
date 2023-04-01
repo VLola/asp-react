@@ -12,7 +12,11 @@ namespace Project_124.Repositories
         }
         public IEnumerable<User> GetUsers()
         {
-            return context.Users.Where(user=>user.Role == "User");
+            return context.Users.Where(user => user.Role == "User");
+        }
+        public IEnumerable<Buy> GetBuys()
+        {
+            return context.Buys;
         }
         public async Task UpdateUser(User user)
         {

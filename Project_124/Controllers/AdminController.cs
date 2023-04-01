@@ -29,6 +29,20 @@ namespace Project_124.Controllers
             }
             else return NotFound("Claim not found");
         }
+        [HttpGet("GetBuys"), Authorize]
+        public ActionResult<IEnumerable<Buy>> GetBuys()
+        {
+            Claim? claimRole = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            if (claimRole != null)
+            {
+                if (claimRole.Value == "Admin")
+                {
+                    return Ok(work.Repository.GetBuys());
+                }
+                else return BadRequest("No access");
+            }
+            else return NotFound("Claim not found");
+        }
         [HttpPost("UpdateUser"), Authorize]
         public async Task<ActionResult> UpdateUser(User user)
         {
