@@ -13,7 +13,7 @@ namespace Project_124.Repositories
     public class UserRepo
     {
         string pathFiles = Directory.GetCurrentDirectory() + "/Files/";
-        string ApiKeyGPT = "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";
+        string ApiKeyGPT = "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";
         public AzureContext context;
         public UserRepo(AzureContext context)
         {

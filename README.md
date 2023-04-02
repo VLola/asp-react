@@ -1,3 +1,61 @@
+# Project 124.
+
+Ќаписать веб-сервис с поддержкой мобильной верстки дл€ получени€ ответов ChatGP. ќсобеностью платформы €вл€етс€ несколько фактов:
+
+- ћожно задавать вопрос голосом
+- ’ранитс€ полна€ истори€ за все врем€ общени€ 
+- ћожно задавать вопрос написанный текстом на фото
+
+ƒо регистрации пользователь может ознакомитс€ с возможност€ми сервиса в виде лендинга. ѕосле регистрации пользователю доступно 5 операций в день. ѕредусмотреть 4 уровн€ подписки.
+
+1) Ѕесплатна€. ƒает возможность использовать только картинку с текстом. Ќе более 50 в день.
+2) 5$. ƒает возможность использовать только картинку с текстом неорганиченное количество запросов
+3) 25$.  ак прошла€ + просмотр истории испольльзовани€ 
+4) 50$.  ак прошла€ + возможность отправки голосовых сообщений не больше 15 секунд
+
+ќплата - эмул€ци€ с переходом на сайт любого банка.
+
+—о стороны админа сервиса должна предоставл€ть возможность взаимодействи€ с базой клиентов и просмотром историей покупок.
+
+“ак же - возможность блокировки пользовател€ на врем€ (1 день | 1 недел€ | 3 мес€ца | 1 год | на всегда).
+
+###Ask a question in text:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/1.png)
+
+###Ask a question in image:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/2.png)
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/3.png)
+
+###Ask a question in voice:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/4.png)
+
+###History of questions:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/5.png)
+
+###Convenient to use the site on mobile devices:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/6.png)
+
+###Payment:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/7.png)
+
+##Admin panel:
+
+###Subscriptions:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/8.png)
+
+###Users:
+
+![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_76/ClientApp/src/images/9.png)
+
+___
+
 # Project 76.
 
 —делать сайт дл€ работы со списком покупок
