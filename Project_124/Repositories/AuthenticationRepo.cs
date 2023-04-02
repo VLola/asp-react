@@ -15,7 +15,7 @@ namespace Project_124.Repositories
         {
             User user = new User();
             user.Email = dataUser.Email;
-            user.Password = dataUser.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dataUser.Password);
             user.Access = 0;
             user.Role = "User";
             context.Users.Add(user);
@@ -23,8 +23,11 @@ namespace Project_124.Repositories
         }
         public async Task<User?> CheckUser(DataUser dataUser)
         {
-            User? user = await context.Users.FirstOrDefaultAsync(item => item.Email == dataUser.Email && item.Password == dataUser.Password);
-            if (user != null) return user;
+            User? user = await context.Users.FirstOrDefaultAsync(item => item.Email == dataUser.Email);
+            if (user != null) { 
+                if(BCrypt.Net.BCrypt.Verify(dataUser.Password, user.Password)) return user;
+                else return null;
+            }
             else return null;
         }
         public async Task<bool> CheckEmail(DataUser dataUser)
