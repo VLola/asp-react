@@ -19,38 +19,38 @@
 
 Так же - возможность блокировки пользователя на время (1 день | 1 неделя | 3 месяца | 1 год | на всегда).
 
-###Ask a question in text:
+### Ask a question in text:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/1.png)
 
-###Ask a question in image:
+### Ask a question in image:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/2.png)
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/3.png)
 
-###Ask a question in voice:
+### Ask a question in voice:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/4.png)
 
-###History of questions:
+### History of questions:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/5.png)
 
-###Convenient to use the site on mobile devices:
+### Convenient to use the site on mobile devices:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/6.png)
 
-###Payment:
+### Payment:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/7.png)
 
-##Admin panel:
+## Admin panel:
 
-###Subscriptions:
+### Subscriptions:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/8.png)
 
-###Users:
+### Users:
 
 ![Image text](https://raw.githubusercontent.com/VLola/asp-react/master/Project_124/ClientApp/src/images/9.png)
 
